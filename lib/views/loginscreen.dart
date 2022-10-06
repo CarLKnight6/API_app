@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:api_app/AppConfig/Appconfig.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
-
-
-String? currentuseremail;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class loginscreen extends StatefulWidget {
   @override
@@ -34,49 +33,47 @@ class _loginscreenState extends State<loginscreen> {
       logpasswordcontroller.clear();
     }
 
-  
+    Future<void> LoginOfuser(String email, password) async {
+      var jsonResponse;
 
-  
-Future <void> LoginOfuser(String  email, password) async{
-    var jsonResponse ;
-    Map data = {
-      
-      'email': logemailcontroller.text,
-      'password': logpasswordcontroller.text,
-      
-    };
-    print(data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.reload();
+      Map data = {
+        'email': logemailcontroller.text,
+        'password': logpasswordcontroller.text,
+      };
 
-     String body = json.encode(data);
-    var url = 'https://api-001.emberspec.com/api/login';
-    var response = await http.post(
-      Uri.parse(url),
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-    ).timeout(Duration(seconds: 10));
+      String body = json.encode(data);
+      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
+      var response = await http.post(
+        url,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          "accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+      ).timeout(Duration(seconds: 10));
 
-    print(response.body);
-    print(response.statusCode);
+      print(response.body);
+      // print(response.body["token"]);
+      // prefs.setString("token", jsonResponse['response']['token']);
+      print('access token is -> ${json.decode(response.body)['token']}');
 
-    if (response.statusCode == 201) {
-       jsonResponse = json.decode(response.body.toString());   
-         
-      Navigator.pushNamed(context, '/homescreen');
-      // ignore: avoid_print
-      print('success');
-    } else {
-      print('error');
+      print(response.statusCode);
+
+      if (response.statusCode == 201) {
+        jsonResponse = json.decode(response.body.toString());
+        prefs.setString("token", json.decode(response.body)['token']);
+        Navigator.pushNamed(context, '/homescreen');
+        // ignore: avoid_print
+
+        print('success ${jsonResponse['user']['name']}');
+        print('success');
+      } else {
+        print('error');
+      }
     }
-
-
-
-}
-   
-    
 
     // String? validateEmail(String? formEmail) {
     //   if (formEmail == null || formEmail.isEmpty)
@@ -88,7 +85,7 @@ Future <void> LoginOfuser(String  email, password) async{
     return WillPopScope(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('padayon'),
+            title: Text('login'),
             backgroundColor: Color.fromRGBO(8, 120, 93, 3),
             automaticallyImplyLeading: false,
           ),
@@ -173,7 +170,8 @@ Future <void> LoginOfuser(String  email, password) async{
                     ),
                     MaterialButton(
                       onPressed: () {
-                          LoginOfuser(logemailcontroller.text , logpasswordcontroller.text);
+                        LoginOfuser(logemailcontroller.text,
+                            logpasswordcontroller.text);
 
                         //login function button
                       },
@@ -209,7 +207,6 @@ Future <void> LoginOfuser(String  email, password) async{
                         //     fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                     ),
-             
                   ],
                 )),
           ),

@@ -7,6 +7,7 @@ import 'dart:ui';
 
 import 'dart:math';
 
+import '../AppConfig/Appconfig.dart';
 
 class registrationscreen extends StatefulWidget {
   const registrationscreen({Key? key}) : super(key: key);
@@ -20,8 +21,8 @@ class _registrationscreenState extends State<registrationscreen> {
   void initState() {
     super.initState();
     setState(() {
-      anoncontroller.clear();
-      anoncontroller.text = getRandomString(10);
+      namecontroller.clear();
+      namecontroller.text = getRandomString(10);
     });
   }
 
@@ -30,7 +31,7 @@ class _registrationscreenState extends State<registrationscreen> {
   final regemailcontroller = TextEditingController();
 
   final regpasswordcontroller = TextEditingController();
-  var anoncontroller = TextEditingController();
+  var namecontroller = TextEditingController();
   bool _randomtext = true;
   var donetext = 'done';
   var _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -184,46 +185,43 @@ class _registrationscreenState extends State<registrationscreen> {
         },
       );
     }
- 
-   Future <void> RegisterOfuser(String  name, email, password, password_confirmation) async{
-    var jsonResponse ;
-    Map data = {
-      'name': anoncontroller.text,
-      'email': regemailcontroller.text,
-      'password': regpasswordcontroller.text,
-      'password_confirmation' : regpasswordcontroller.text
-       
-    };
-    print(data);
 
-     String body = json.encode(data);
-    var url = 'https://api-001.emberspec.com/api/register';
-    var response = await http.post(
-      Uri.parse(url),
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-    ).timeout(Duration(seconds: 10));
+    Future<void> RegisterOfuser(
+        String name, email, password, password_confirmation) async {
+      var jsonResponse;
+      Map data = {
+        'name': namecontroller.text,
+        'email': regemailcontroller.text,
+        'password': regpasswordcontroller.text,
+        'password_confirmation': regpasswordcontroller.text
+      };
+      print(data);
 
-    print(response.body);
-    print(response.statusCode);
+      String body = json.encode(data);
+      Uri url = Uri.parse(AppConfig().api_BASEURL + "/api/register");
+      var response = await http.post(
+        url,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          "accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+      ).timeout(Duration(seconds: 10));
 
-    if (response.statusCode == 201) {
-       jsonResponse = json.decode(response.body.toString());   
-         
-      Navigator.pushNamed(context, '/');
-      // ignore: avoid_print
-      print('success');
-    } else {
-      print('error');
+      print(response.body);
+      print(response.statusCode);
+
+      if (response.statusCode == 201) {
+        jsonResponse = json.decode(response.body.toString());
+
+        Navigator.pushNamed(context, '/');
+        // ignore: avoid_print
+        print('success');
+      } else {
+        print('error');
+      }
     }
-
-
-
-}
 
     return WillPopScope(
       child: Scaffold(
@@ -254,7 +252,7 @@ class _registrationscreenState extends State<registrationscreen> {
                     child: TextFormField(
                       readOnly: true,
                       style: TextStyle(color: Colors.white),
-                      controller: anoncontroller,
+                      controller: namecontroller,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'press the box to get anon name';
@@ -269,10 +267,10 @@ class _registrationscreenState extends State<registrationscreen> {
                               ? Icons.account_box
                               : Icons.add_box_outlined),
                           onPressed: () {
-                            anoncontroller.clear();
+                            namecontroller.clear();
                             setState(() {
-                              anoncontroller.clear();
-                              anoncontroller.text =
+                              namecontroller.clear();
+                              namecontroller.text =
                                   getRandomString(10); // randomfunction here
                             });
                           },
@@ -361,16 +359,20 @@ class _registrationscreenState extends State<registrationscreen> {
                       // if (_formKey2.currentState!.validate()) {
                       if (regemailcontroller.text.isEmpty &&
                           regpasswordcontroller.text.isEmpty &&
-                          anoncontroller.text.isEmpty) {
+                          namecontroller.text.isEmpty) {
                         showAlertDialog2invalidentry(context);
-                      } else if (anoncontroller.text.isEmpty) {
+                      } else if (namecontroller.text.isEmpty) {
                         showAlertDialog2invalidentry(context);
                       } else if (regemailcontroller.text.isEmpty) {
                         showAlertDialoginvalidemail(context);
                       } else if (regpasswordcontroller.text.isEmpty) {
                         showAlertDialog2invalidentry(context);
                       } else {
-                        RegisterOfuser(anoncontroller.text, regemailcontroller.text, regpasswordcontroller.text, regemailcontroller.text);
+                        RegisterOfuser(
+                            namecontroller.text,
+                            regemailcontroller.text,
+                            regpasswordcontroller.text,
+                            regemailcontroller.text);
                       }
 
                       // }
@@ -391,5 +393,3 @@ class _registrationscreenState extends State<registrationscreen> {
     );
   }
 }
-
-

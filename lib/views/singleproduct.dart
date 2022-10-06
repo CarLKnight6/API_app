@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -14,6 +11,6 @@ class SingleProduct extends StatefulWidget {
 class _SingleProductState extends State<SingleProduct> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(); //highlight + wrap with widget+ cntrl&space = to wrap automatically
   }
 }
