@@ -11,21 +11,21 @@ import 'package:api_app/views/homescreen.dart';
 
 import '../AppConfig/Appconfig.dart';
 
-class DeleteProduct extends StatefulWidget {
-  DeleteProduct({Key? key, String? token}) : super(key: key);
+class AddProduct extends StatefulWidget {
+  AddProduct({Key? key, String? token}) : super(key: key);
 
   @override
-  _DeleteProductState createState() => _DeleteProductState();
+  _AddProductState createState() => _AddProductState();
 }
 
-class _DeleteProductState extends State<DeleteProduct> {
+class _AddProductState extends State<AddProduct> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
 
   final pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
-  var productidcontroller = TextEditingController();
+  var namecontroller = TextEditingController();
 
   void clearText() {
     imagelink_descriptioncontroller.clear();
@@ -39,19 +39,22 @@ class _DeleteProductState extends State<DeleteProduct> {
       super.initState();
     }
 
-    Future<void> DeleteProduct(String id) async {
+    Future<void> AddProduct(String name, String image_link, String description,
+        String price, bool is_published) async {
       var jsonResponse;
       Map data = {
-        'id': productidcontroller.text,
+        'name': namecontroller.text,
+        'image_link': imagelink_descriptioncontroller.text,
+        'description': imagelink_descriptioncontroller.text,
+        'price': pricecontroller.text,
+        'is_published': false
       };
       print(data);
       print("the first token $token");
 
       String body = json.encode(data);
-
-      Uri url = Uri.parse(
-          "${AppConfig().api_BASEURL}/api/products/${productidcontroller.text}");
-      var response = await http.delete(
+      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
+      var response = await http.post(
         url,
         body: body,
         headers: {
@@ -107,7 +110,7 @@ class _DeleteProductState extends State<DeleteProduct> {
                       child: TextFormField(
                         readOnly: false,
                         style: TextStyle(color: Colors.white),
-                        controller: productidcontroller,
+                        controller: namecontroller,
                         validator: (text) {
                           if (text == null || text.isEmpty) {
                             return 'press the box to get anon name';
@@ -122,15 +125,15 @@ class _DeleteProductState extends State<DeleteProduct> {
                           //       ? Icons.account_box
                           //       : Icons.add_box_outlined),
                           //   onPressed: () {
-                          //     productidcontroller.clear();
+                          //     namecontroller.clear();
                           //     setState(() {
-                          //       productidcontroller.clear();
-                          //       productidcontroller.text =
+                          //       namecontroller.clear();
+                          //       namecontroller.text =
                           //           getRandomString(10); // randomfunction here
                           //     });
                           //   },
                           // ),
-                          labelText: 'Enter Product ID ',
+                          labelText: 'your product name',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -140,6 +143,85 @@ class _DeleteProductState extends State<DeleteProduct> {
                           errorStyle: TextStyle(
                             color: Colors.red,
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: imagelink_descriptioncontroller,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'password is required!';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter your description and imagelink',
+                          prefixIcon: Icon(Icons.person),
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          //when error has occured
+                          // errorStyle: TextStyle(
+                          //   color: Colors.red,
+                          // ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: pricecontroller,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'e-mail address is required.';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter your price',
+
+                          prefixIcon: Icon(Icons.person),
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          //when error has occured
+                          // errorStyle: TextStyle(
+                          //   color: Colors.red,
+                          // ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        // controller: ispublishedcontroller,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'password is required!';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Is published?',
+                          prefixIcon: Icon(Icons.person),
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          //when error has occured
+                          // errorStyle: TextStyle(
+                          //   color: Colors.red,
+                          // ),
                         ),
                       ),
                     ),
@@ -161,23 +243,21 @@ class _DeleteProductState extends State<DeleteProduct> {
                     MaterialButton(
                       onPressed: () {
                         // if (_formKey2.currentState!.validate()) {
-                        //add delete function here
-                        DeleteProduct(productidcontroller.text);
-                        print(productidcontroller.text);
+                        //addprod here
 
-                        // DeleteProduct(
-                        //     productidcontroller.text,
-                        //     imagelink_descriptioncontroller.text,
-                        //     imagelink_descriptioncontroller.text,
-                        //     pricecontroller.text,
-                        //     false);
-
+                        AddProduct(
+                            namecontroller.text,
+                            imagelink_descriptioncontroller.text,
+                            imagelink_descriptioncontroller.text,
+                            pricecontroller.text,
+                            false);
+                              
                         // }
                       },
                       color: Colors.black.withOpacity(0.05),
                       textColor: Colors.white,
                       child: Text(
-                        'delete',
+                        'donetext',
                         // style: GoogleFonts.droidSans(
                         //     fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),

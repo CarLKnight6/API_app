@@ -1,28 +1,72 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'dart:io';
-
+import 'package:api_app/AppConfig/Appconfig.dart';
+import 'package:api_app/views/addproduct.dart';
+import 'package:api_app/views/productlist.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+String? token;
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key, String? currentuseremail}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // String token = "";
 
-  Future<void> _signOut() async {
-   
+  @override
+  void initState() {
+    super.initState();
+    getCred();
+  }
+
+  void getCred() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      pref.reload();
+      token = pref.getString('token')!;
+    });
+  }
+
+  Future<void> LogoutOfuser() async {
+    var jsonResponse;
+
+    Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/logout");
+    var response = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": 'Bearer $token'
+      },
+    );
+
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body.toString());
+
+      Navigator.pushNamed(context, '/');
+      // ignore: avoid_print
+      print('success');
+    } else {
+      print('error');
+    }
   }
 
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('padayon'),
+            title: Text('Home Page'),
             backgroundColor: Color.fromRGBO(8, 120, 93, 3),
             //automaticallyImplyLeading: false,
           ),
@@ -40,8 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text('Sign Out'),
                   onTap: () {
-                    _signOut();
-                    Navigator.pushNamed(context, '/');
+                    LogoutOfuser();
+
                     // Update the state of the app.
                     // ...
                   },
@@ -96,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         enableInteractiveSelection: false,
                         decoration: InputDecoration(
-                          labelText: 'WELCOME USER ',  //$currentuseremail
+                          labelText: 'WELCOME USER $token', //$currentuseremail
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -115,6 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: double.infinity,
                     child: MaterialButton(
                       onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProductList(token: token)));
                         Navigator.pushNamed(context, '/productlist');
                       },
                       color: Colors.black.withOpacity(0.05),
@@ -130,8 +176,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: double.infinity,
                     child: MaterialButton(
                       onPressed: () {
-                        //VIDEOCHATSCREEN FUNCTION
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddProduct(token: token)));
                         Navigator.pushNamed(context, '/addproduct');
+                        print(token);
                       },
                       color: Colors.black.withOpacity(0.05),
                       textColor: Colors.white,
@@ -142,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                    SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     child: MaterialButton(
                       onPressed: () {
@@ -159,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                             SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     child: MaterialButton(
                       onPressed: () {
@@ -175,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                    SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     child: MaterialButton(
                       onPressed: () {
@@ -191,8 +239,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-         
-
                 ],
               )),
         ),
