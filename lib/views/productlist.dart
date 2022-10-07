@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:api_app/model/post.dart';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/views/editproduct.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -68,41 +69,8 @@ class _ProductListState extends State<ProductList> {
       }
       return products;
     }
-    // Future<void> FetchProducts() async {
-    //   var jsonResponse;
 
-    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
-    //   var response = await http.get(
-    //     url,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Authorization": 'Bearer $token'
-    //     },
-    //   ).timeout(Duration(seconds: 10));
-
-    //   print(response.body);
-    //   // print(response.body["token"]);
-    //   // prefs.setString("token", jsonResponse['response']['token']);
-    //   print(token);
-
-    //   print(response.statusCode);
-
-    //   if (response.statusCode == 200) {
-    //     jsonResponse = json.decode(response.body.toString());
-    //     // var stores = json.decode(response.body);
-    //     // int jsonlength = (stores as Map<String, dynamic>).length;
-    //     // print(stores);
-    //     // print(jsonResponse['data'][1].toString());
-    //     // return jsonResponse;
-    //     // ignore: avoid_print
-    //     print(jsonResponse['data'][1].toString());
-    //     print('success');
-    //   } else {
-    //     print('error');
-    //   }
-    // }
+    //HERE^
 
     return WillPopScope(
       child: Scaffold(
