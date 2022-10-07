@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
         '/homescreen': (context) => HomeScreen(),
         '/register': (context) => registrationscreen(),
         '/deleteproduct': (context) => DeleteProduct(),
-        '/editproduct': (context) => EditProduct(),
         '/productlist': (context) => ProductList(),
         '/singleproduct': (context) => SingleProduct(),
         '/addproduct': (context) => AddProduct()
@@ -39,5 +38,5 @@ class MyApp extends StatelessWidget {
         //  '/journalnotescreen': (context) => journalnotescreen(),
       },
     );
-  } 
+  }
 }

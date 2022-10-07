@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:api_app/model/post.dart';
+import 'package:api_app/views/editproduct.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -21,39 +22,16 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   final _formKey2 = GlobalKey<FormState>();
-  Future<ProductModel>? futureProduct;
-  final imagelink_descriptioncontroller = TextEditingController();
 
+  final imagelink_descriptioncontroller = TextEditingController();
+  int last_page = 1;
   final pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
   var namecontroller = TextEditingController();
-
+  int page = 1;
   void clearText() {
     imagelink_descriptioncontroller.clear();
     pricecontroller.clear();
-  }
-
-  Future<ProductModel> fetchProducts() async {
-    final response = await http.get(
-      Uri.parse('${AppConfig().api_BASEURL}/api/products'),
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": 'Bearer $token'
-      },
-    );
-
-    if (response.statusCode == 201) {
-      print(token);
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return ProductModel.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
   }
 
   @override
@@ -61,8 +39,70 @@ class _ProductListState extends State<ProductList> {
     @override
     void initState() {
       super.initState();
-      futureProduct = fetchProducts();
     }
+
+    Future<List<Product>> getAllProducts() async {
+      // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
+      var response = await http.get(
+          Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page"),
+          headers: {
+            "Content-Type": "application/json",
+            "accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Authorization": 'Bearer $token'
+          });
+      var jsonData = json.decode(response.body);
+      print(jsonData['last_page']);
+
+      last_page = (jsonData['last_page']);
+
+      var jsonArray = jsonData['data'];
+      List<Product> products = [];
+      for (var jsonProduct in jsonArray) {
+        Product product = Product(
+            id: jsonProduct['id'],
+            user_id: jsonProduct['user_id'],
+            name: jsonProduct['name'],
+            price: jsonProduct['price']);
+        products.add(product);
+      }
+      return products;
+    }
+    // Future<void> FetchProducts() async {
+    //   var jsonResponse;
+
+    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
+    //   var response = await http.get(
+    //     url,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Authorization": 'Bearer $token'
+    //     },
+    //   ).timeout(Duration(seconds: 10));
+
+    //   print(response.body);
+    //   // print(response.body["token"]);
+    //   // prefs.setString("token", jsonResponse['response']['token']);
+    //   print(token);
+
+    //   print(response.statusCode);
+
+    //   if (response.statusCode == 200) {
+    //     jsonResponse = json.decode(response.body.toString());
+    //     // var stores = json.decode(response.body);
+    //     // int jsonlength = (stores as Map<String, dynamic>).length;
+    //     // print(stores);
+    //     // print(jsonResponse['data'][1].toString());
+    //     // return jsonResponse;
+    //     // ignore: avoid_print
+    //     print(jsonResponse['data'][1].toString());
+    //     print('success');
+    //   } else {
+    //     print('error');
+    //   }
+    // }
 
     return WillPopScope(
       child: Scaffold(
@@ -74,21 +114,161 @@ class _ProductListState extends State<ProductList> {
               icon: Icon(Icons.arrow_back),
             ),
             title: Text('padayon'),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.arrow_left),
+                tooltip: 'Show Snackbar',
+                onPressed: () {
+                  if (page > 0) {
+                    setState(() {
+                      page--;
+                      getAllProducts();
+                    });
+                  } else if (page == 0) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('end of page')));
+                  }
+
+                  print(page);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('end of page')));
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_right),
+                tooltip: 'Show Snackbar',
+                onPressed: () {
+                  if (page < last_page) {
+                    setState(() {
+                      page++;
+                      getAllProducts();
+                    });
+                  } else {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('end of page')));
+                  }
+                },
+              ),
+            ],
             backgroundColor: Color.fromRGBO(8, 120, 93, 3),
           ),
-          body: Center(
-            child: FutureBuilder<ProductModel>(
-              future: futureProduct,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(snapshot.data!.name);
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                // By default, show a loading spinner.
-                return Text('${snapshot.error}');
-              },
-            ),
+          body: FutureBuilder<List<Product>>(
+            future: getAllProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                List<Product> products = snapshot.data!;
+                return ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      Product product = products[index];
+
+                      // return Container(
+                      //   padding: EdgeInsets.all(10),
+                      //   margin: EdgeInsets.only(bottom: 10),
+                      //   decoration: BoxDecoration(
+                      //     color: Color.fromARGB(255, 214, 224, 233),
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Row(children: [
+                      //     Text(
+                      //       product.name,
+                      //       style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Color.fromARGB(255, 24, 23, 23)),
+                      //     )
+                      //   ]),
+                      // );
+
+                      return InkWell(
+                        onTap: () {
+                          print(product.id);
+                          var product_id = product.id;
+                          var product_name = product.name;
+                          var product_price = product.price;
+                          var product_userid = product.user_id;
+                          Navigator.of(context)
+                              .push(
+                            MaterialPageRoute(
+                              builder: (context) => EditProduct(product_id,
+                                  product_name, product_price, product_userid),
+                            ),
+                          )
+                              .then((value) {
+                            setState(() {});
+                          });
+                        },
+                        child: Card(
+                          color: Color.fromARGB(255, 218, 211, 149),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Product name: ${product.name}',
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontFamily: "lato",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                // Text(
+                                //   "${data['feeling']}",
+                                //   style: TextStyle(
+                                //     fontSize: 24.0,
+                                //     fontFamily: "lato",
+                                //     fontWeight: FontWeight.bold,
+                                //     color: Colors.black87,
+                                //   ),
+                                // ),
+                                //
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'product price: ${product.price}',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontFamily: "lato",
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'Product ID: ${product.id.toString()}',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontFamily: "lato",
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'Product USER ID: ${product.user_id.toString()}',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontFamily: "lato",
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    });
+              }
+            },
           )),
       onWillPop: () async {
         return false;

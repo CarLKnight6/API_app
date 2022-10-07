@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/model/post.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -13,20 +14,34 @@ import 'package:api_app/views/homescreen.dart';
 import '../AppConfig/Appconfig.dart';
 
 class EditProduct extends StatefulWidget {
-  EditProduct({Key? key, String? token}) : super(key: key);
+  // EditProduct({Key? key, String? token}) : super(key: key);
+
+  int product_id;
+  String product_name;
+  String product_price;
+  int product_userid;
+
+  EditProduct(this.product_id, this.product_name, this.product_price,
+      this.product_userid);
 
   @override
   _EditProductState createState() => _EditProductState();
 }
 
 class _EditProductState extends State<EditProduct> {
+  late int captured_product_id;
+  late String captured_product_name;
+  late String captured_product_price;
+  late int captured_product_userid;
+
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
 
-  final pricecontroller = TextEditingController();
+  var pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
-  var namecontroller = TextEditingController();
+  var productidcontroller = TextEditingController();
+  var productnamecontroller = TextEditingController();
 
   void clearText() {
     imagelink_descriptioncontroller.clear();
@@ -35,27 +50,32 @@ class _EditProductState extends State<EditProduct> {
 
   @override
   Widget build(BuildContext context) {
-    @override
-    void initState() {
-      super.initState();
-    }
-
+    captured_product_id = widget.product_id;
+    captured_product_name = widget.product_name;
+    captured_product_price = widget.product_price;
+    captured_product_userid = widget.product_userid;
     TextEditingController _controller = TextEditingController();
 
     late StreamController _streamController;
     late Stream _stream;
-
     late Timer _debounce;
 
     _search() async {
       //search function here
+      print(captured_product_id);
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      _debounce = 0 as Timer;
     }
 
     Future<void> EditProduct(String name, String image_link, String description,
         String price, bool is_published) async {
       var jsonResponse;
       Map data = {
-        'name': namecontroller.text,
+        'name': productnamecontroller.text,
         'image_link': imagelink_descriptioncontroller.text,
         'description': imagelink_descriptioncontroller.text,
         'price': pricecontroller.text,
@@ -65,9 +85,11 @@ class _EditProductState extends State<EditProduct> {
       print("the first token $token");
 
       String body = json.encode(data);
-      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
-      var response = await http.post(
-        url,
+      // Uri url = Uri.parse(
+      //     "${AppConfig().api_BASEURL}/api/products/$captured_product_id");
+      var response = await http.put(
+        Uri.parse(
+            "${AppConfig().api_BASEURL}/api/products/$captured_product_id"),
         body: body,
         headers: {
           "Content-Type": "application/json",
@@ -80,10 +102,9 @@ class _EditProductState extends State<EditProduct> {
       print(response.body);
       print(response.statusCode);
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         jsonResponse = json.decode(response.body.toString());
-
-        Navigator.pushNamed(context, '/homescreen');
+        Navigator.pushNamed(context, '/productlist');
         // ignore: avoid_print
         print('success');
       } else {
@@ -96,7 +117,7 @@ class _EditProductState extends State<EditProduct> {
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/homescreen');
+                Navigator.pushNamed(context, '/productlist');
               },
               icon: Icon(Icons.arrow_back),
             ),
@@ -116,48 +137,20 @@ class _EditProductState extends State<EditProduct> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 12.0, bottom: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24.0),
-                      ),
-                      child: TextFormField(
-                        onFieldSubmitted: (_) async {
-                          // _search()
-                          //search function here
-                        },
-                        onChanged: (String text) {
-                          if (_debounce.isActive) _debounce.cancel();
-                          _debounce =
-                              Timer(const Duration(milliseconds: 1000), () {
-                            // _search();
-                            //search function here2
-                            print(_controller);
-                          });
-                        },
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          hintText: "Enter Product ID",
-                          contentPadding: const EdgeInsets.only(left: 24.0),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                       child: TextFormField(
-                        readOnly: false,
+                        readOnly: true,
                         style: TextStyle(color: Colors.white),
-                        controller: namecontroller,
+                        // controller: productidcontroller,
                         validator: (text) {
                           if (text == null || text.isEmpty) {
                             return 'press the box to get anon name';
                           }
                           return null;
                         },
-                        enableInteractiveSelection: true,
+                        enableInteractiveSelection: false,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
                           // suffixIcon: IconButton(
@@ -165,15 +158,15 @@ class _EditProductState extends State<EditProduct> {
                           //       ? Icons.account_box
                           //       : Icons.add_box_outlined),
                           //   onPressed: () {
-                          //     namecontroller.clear();
+
                           //     setState(() {
-                          //       namecontroller.clear();
-                          //       namecontroller.text =
-                          //           getRandomString(10); // randomfunction here
+
+                          //       prod_id = productidcontroller.text as int;
+                          //            // randomfunction here
                           //     });
                           //   },
                           // ),
-                          labelText: 'Product ID ',
+                          labelText: 'Product ID  $captured_product_id',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -192,7 +185,7 @@ class _EditProductState extends State<EditProduct> {
                       child: TextFormField(
                         readOnly: false,
                         style: TextStyle(color: Colors.white),
-                        controller: namecontroller,
+                        controller: productnamecontroller,
                         validator: (text) {
                           if (text == null || text.isEmpty) {
                             return 'press the box to get anon name';
@@ -203,7 +196,8 @@ class _EditProductState extends State<EditProduct> {
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
 
-                          labelText: 'your product name',
+                          labelText:
+                              'current product name $captured_product_name',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -230,7 +224,7 @@ class _EditProductState extends State<EditProduct> {
                         },
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
-                          labelText: 'Enter your description and imagelink',
+                          labelText: 'current desc $captured_product_name',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -256,7 +250,7 @@ class _EditProductState extends State<EditProduct> {
                         },
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
-                          labelText: 'Enter your price',
+                          labelText: 'current price $captured_product_price',
 
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
@@ -269,32 +263,32 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        // controller: ispublishedcontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'password is required!';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Is published?',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding:
+                    //       EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    //   child: TextFormField(
+                    //     style: TextStyle(color: Colors.white),
+                    //     // controller: ispublishedcontroller,
+                    //     validator: (text) {
+                    //       if (text == null || text.isEmpty) {
+                    //         return 'password is required!';
+                    //       }
+                    //       return null;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       border: UnderlineInputBorder(),
+                    //       labelText: 'Is published? ',
+                    //       prefixIcon: Icon(Icons.person),
+                    //       labelStyle: TextStyle(
+                    //         color: Colors.white,
+                    //       ),
+                    //       //when error has occured
+                    //       // errorStyle: TextStyle(
+                    //       //   color: Colors.red,
+                    //       // ),
+                    //     ),
+                    //   ),
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -315,8 +309,10 @@ class _EditProductState extends State<EditProduct> {
                         // if (_formKey2.currentState!.validate()) {
                         //addprod here
 
+                        // fetchProducts();
+                        _search();
                         EditProduct(
-                            namecontroller.text,
+                            productnamecontroller.text,
                             imagelink_descriptioncontroller.text,
                             imagelink_descriptioncontroller.text,
                             pricecontroller.text,
@@ -327,7 +323,7 @@ class _EditProductState extends State<EditProduct> {
                       color: Colors.black.withOpacity(0.05),
                       textColor: Colors.white,
                       child: Text(
-                        'Update',
+                        'UPDATE',
                         // style: GoogleFonts.droidSans(
                         //     fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),

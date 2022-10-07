@@ -190,22 +190,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () {
-                        //VIDEOCHATSCREEN FUNCTION
-                        Navigator.pushNamed(context, '/editproduct');
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Edit Product",
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
 
                   SizedBox(
                     width: double.infinity,
@@ -218,22 +202,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       textColor: Colors.white,
                       child: Text(
                         "Delete Product",
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () {
-                        //VIDEOCHATSCREEN FUNCTION
-                        Navigator.pushNamed(context, '/singleproduct');
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Single Product",
                         // style: GoogleFonts.droidSans(
                         //     fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),

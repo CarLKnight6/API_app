@@ -251,13 +251,13 @@ class _AddProductState extends State<AddProduct> {
                             imagelink_descriptioncontroller.text,
                             pricecontroller.text,
                             false);
-                              
+
                         // }
                       },
                       color: Colors.black.withOpacity(0.05),
                       textColor: Colors.white,
                       child: Text(
-                        'donetext',
+                        'ADD',
                         // style: GoogleFonts.droidSans(
                         //     fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
