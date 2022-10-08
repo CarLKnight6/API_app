@@ -50,6 +50,8 @@ class _EditProductState extends State<EditProduct> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     captured_product_id = widget.product_id;
     captured_product_name = widget.product_name;
     captured_product_price = widget.product_price;
@@ -105,9 +107,14 @@ class _EditProductState extends State<EditProduct> {
       if (response.statusCode == 200) {
         jsonResponse = json.decode(response.body.toString());
         Navigator.pushNamed(context, '/productlist');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Successfully updated the product')));
         // ignore: avoid_print
         print('success');
       } else {
+        print('error');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Incomplete Product details')));
         print('error');
       }
     }
@@ -124,7 +131,9 @@ class _EditProductState extends State<EditProduct> {
             title: Text('Edit Product'),
             backgroundColor: Color.fromRGBO(8, 120, 93, 3),
           ),
-          body: SingleChildScrollView(
+          body: FractionallySizedBox(
+            alignment: Alignment.topCenter,
+            widthFactor: 1,
             child: Container(
                 key: _formKey2,
                 decoration: BoxDecoration(
@@ -153,19 +162,6 @@ class _EditProductState extends State<EditProduct> {
                         enableInteractiveSelection: false,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
-                          // suffixIcon: IconButton(
-                          //   icon: Icon(_randomtext
-                          //       ? Icons.account_box
-                          //       : Icons.add_box_outlined),
-                          //   onPressed: () {
-
-                          //     setState(() {
-
-                          //       prod_id = productidcontroller.text as int;
-                          //            // randomfunction here
-                          //     });
-                          //   },
-                          // ),
                           labelText: 'Product ID  $captured_product_id',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
@@ -262,47 +258,6 @@ class _EditProductState extends State<EditProduct> {
                           // ),
                         ),
                       ),
-                    ),
-                    // Padding(
-                    //   padding:
-                    //       EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    //   child: TextFormField(
-                    //     style: TextStyle(color: Colors.white),
-                    //     // controller: ispublishedcontroller,
-                    //     validator: (text) {
-                    //       if (text == null || text.isEmpty) {
-                    //         return 'password is required!';
-                    //       }
-                    //       return null;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //       border: UnderlineInputBorder(),
-                    //       labelText: 'Is published? ',
-                    //       prefixIcon: Icon(Icons.person),
-                    //       labelStyle: TextStyle(
-                    //         color: Colors.white,
-                    //       ),
-                    //       //when error has occured
-                    //       // errorStyle: TextStyle(
-                    //       //   color: Colors.red,
-                    //       // ),
-                    //     ),
-                    //   ),
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline),
-                            ),
-                            onPressed: () {
-                              // _launchURL3();
-                            })
-                      ],
                     ),
                     MaterialButton(
                       onPressed: () {

@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  animated_background: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -68,6 +69,7 @@ flutter:
 
   assets:
     - assets/images/bg1.jpg
+    - assets/images/bg2.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

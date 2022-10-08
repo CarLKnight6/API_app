@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'dart:io';
+import 'package:animated_background/animated_background.dart';
 import 'package:api_app/AppConfig/Appconfig.dart';
 import 'package:api_app/views/addproduct.dart';
 import 'package:api_app/views/productlist.dart';
@@ -17,7 +18,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   // String token = "";
 
   @override
@@ -56,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       Navigator.pushNamed(context, '/');
       // ignore: avoid_print
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Account logged out')));
       print('success');
     } else {
       print('error');
@@ -67,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text('Home Page'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            backgroundColor: Colors.transparent,
             //automaticallyImplyLeading: false,
           ),
           drawer: Drawer(
@@ -103,112 +107,101 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          body: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/bg1.jpg"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // MaterialButton(
-                  //   onPressed: () {
-                  //     _signOut();
-                  //     Navigator.pushNamed(context, '/');
-                  //   },
-                  //   color: Colors.black.withOpacity(0.05),
-                  //   textColor: Colors.white,
-                  //   child: Text(
-                  //     "SIGNOUT",
-                  //     // style: GoogleFonts.droidSans(
-                  //     //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Container(
-                      width: double.infinity,
-                      child: TextFormField(
-                        readOnly: true,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        enableInteractiveSelection: false,
-                        decoration: InputDecoration(
-                          labelText: 'WELCOME USER $token', //$currentuseremail
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
+          body: AnimatedBackground(
+            vsync: this,
+            behaviour: RandomParticleBehaviour(options: AppConfig().particles),
+            child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                // decoration: BoxDecoration(
+                //   image: DecorationImage(
+                //     image: AssetImage("assets/images/bg1.jpg"),
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      child: Container(
+                        width: double.infinity,
+                        child: TextFormField(
+                          readOnly: true,
+                          style: TextStyle(
                             color: Colors.white,
                           ),
+                          enableInteractiveSelection: false,
+                          decoration: InputDecoration(
+                            labelText:
+                                'WELCOME USER $token', //$currentuseremail
+                            prefixIcon: Icon(Icons.person),
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
 
-                          //when error has occured
-                          errorStyle: TextStyle(
-                            color: Colors.red,
+                            //when error has occured
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProductList(token: token)));
-                        Navigator.pushNamed(context, '/productlist');
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Product List",
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProductList(token: token)));
+                          Navigator.pushNamed(context, '/productlist');
+                        },
+                        color: Colors.black.withOpacity(0.05),
+                        textColor: Colors.white,
+                        child: Text(
+                          "Product List",
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AddProduct(token: token)));
-                        Navigator.pushNamed(context, '/addproduct');
-                        print(token);
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Add Product",
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AddProduct(token: token)));
+                          Navigator.pushNamed(context, '/addproduct');
+                          print(token);
+                        },
+                        color: Colors.black.withOpacity(0.05),
+                        textColor: Colors.white,
+                        child: Text(
+                          "Add Product",
+                          // style: GoogleFonts.droidSans(
+                          //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () {
-                        //VIDEOCHATSCREEN FUNCTION
-                        Navigator.pushNamed(context, '/deleteproduct');
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Delete Product",
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        onPressed: () {
+                          //VIDEOCHATSCREEN FUNCTION
+                          Navigator.pushNamed(context, '/deleteproduct');
+                        },
+                        color: Colors.black.withOpacity(0.05),
+                        textColor: Colors.white,
+                        child: Text(
+                          "Delete Product",
+                          // style: GoogleFonts.droidSans(
+                          //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                )),
+          ),
         ),
         onWillPop: () async {
           return false;

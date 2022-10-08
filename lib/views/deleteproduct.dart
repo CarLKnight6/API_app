@@ -20,7 +20,7 @@ class DeleteProduct extends StatefulWidget {
 
 class _DeleteProductState extends State<DeleteProduct> {
   final _formKey2 = GlobalKey<FormState>();
-
+  String deleterespo = '1';
   final imagelink_descriptioncontroller = TextEditingController();
 
   final pricecontroller = TextEditingController();
@@ -65,19 +65,24 @@ class _DeleteProductState extends State<DeleteProduct> {
       print(response.body);
       print(response.statusCode);
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 && response.body == deleterespo) {
         jsonResponse = json.decode(response.body.toString());
 
         Navigator.pushNamed(context, '/homescreen');
-        // ignore: avoid_print
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Successfully deleted the product')));
+
         print('success');
       } else {
         print('error');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Invalid credential')));
       }
     }
 
     return WillPopScope(
       child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -85,10 +90,13 @@ class _DeleteProductState extends State<DeleteProduct> {
               },
               icon: Icon(Icons.arrow_back),
             ),
-            title: Text('padayon'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            centerTitle: true,
+            title: Text('DELETE A PRODUCT'),
+            backgroundColor: Colors.transparent,
           ),
-          body: SingleChildScrollView(
+          body: FractionallySizedBox(
+            alignment: Alignment.topCenter,
+            widthFactor: 1,
             child: Container(
                 key: _formKey2,
                 decoration: BoxDecoration(

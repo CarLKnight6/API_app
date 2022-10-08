@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ffi';
-import 'package:api_app/model/post.dart';
+import 'package:api_app/model/model.dart';
 import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/views/editproduct.dart';
 import 'package:http/http.dart' as http;
@@ -134,24 +134,6 @@ class _ProductListState extends State<ProductList> {
                     itemBuilder: (context, index) {
                       Product product = products[index];
 
-                      // return Container(
-                      //   padding: EdgeInsets.all(10),
-                      //   margin: EdgeInsets.only(bottom: 10),
-                      //   decoration: BoxDecoration(
-                      //     color: Color.fromARGB(255, 214, 224, 233),
-                      //     borderRadius: BorderRadius.circular(10),
-                      //   ),
-                      //   child: Row(children: [
-                      //     Text(
-                      //       product.name,
-                      //       style: TextStyle(
-                      //           fontSize: 20,
-                      //           fontWeight: FontWeight.bold,
-                      //           color: Color.fromARGB(255, 24, 23, 23)),
-                      //     )
-                      //   ]),
-                      // );
-
                       return InkWell(
                         onTap: () {
                           print(product.id);
@@ -186,16 +168,6 @@ class _ProductListState extends State<ProductList> {
                                     color: Colors.black87,
                                   ),
                                 ),
-                                // Text(
-                                //   "${data['feeling']}",
-                                //   style: TextStyle(
-                                //     fontSize: 24.0,
-                                //     fontFamily: "lato",
-                                //     fontWeight: FontWeight.bold,
-                                //     color: Colors.black87,
-                                //   ),
-                                // ),
-                                //
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: Text(

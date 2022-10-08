@@ -66,11 +66,16 @@ class _loginscreenState extends State<loginscreen> {
         jsonResponse = json.decode(response.body.toString());
         prefs.setString("token", json.decode(response.body)['token']);
         Navigator.pushNamed(context, '/homescreen');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Logged in success')));
+        print('error');
         // ignore: avoid_print
 
         print('success ${jsonResponse['user']['name']}');
         print('success');
       } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Check your credentials')));
         print('error');
       }
     }
@@ -84,9 +89,11 @@ class _loginscreenState extends State<loginscreen> {
 
     return WillPopScope(
         child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
+            centerTitle: true,
             title: Text('login'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
           ),
           body: Form(
@@ -94,9 +101,8 @@ class _loginscreenState extends State<loginscreen> {
             child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/bg1.jpg"),
-                    fit: BoxFit.cover,
-                  ),
+                      image: AssetImage("assets/images/bg2.jpg"),
+                      fit: BoxFit.cover),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

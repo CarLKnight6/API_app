@@ -72,15 +72,22 @@ class _AddProductState extends State<AddProduct> {
         jsonResponse = json.decode(response.body.toString());
 
         Navigator.pushNamed(context, '/homescreen');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Successfully added the product')));
+
         // ignore: avoid_print
         print('success');
       } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Incomplete data given')));
         print('error');
       }
     }
 
     return WillPopScope(
       child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -88,10 +95,13 @@ class _AddProductState extends State<AddProduct> {
               },
               icon: Icon(Icons.arrow_back),
             ),
-            title: Text('padayon'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            centerTitle: true,
+            title: Text('ADD PRODUCT'),
+            backgroundColor: Colors.transparent,
           ),
-          body: SingleChildScrollView(
+          body: FractionallySizedBox(
+            alignment: Alignment.topCenter,
+            widthFactor: 1,
             child: Container(
                 key: _formKey2,
                 decoration: BoxDecoration(
@@ -120,19 +130,6 @@ class _AddProductState extends State<AddProduct> {
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
-                          // suffixIcon: IconButton(
-                          //   icon: Icon(_randomtext
-                          //       ? Icons.account_box
-                          //       : Icons.add_box_outlined),
-                          //   onPressed: () {
-                          //     namecontroller.clear();
-                          //     setState(() {
-                          //       namecontroller.clear();
-                          //       namecontroller.text =
-                          //           getRandomString(10); // randomfunction here
-                          //     });
-                          //   },
-                          // ),
                           labelText: 'your product name',
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
@@ -187,7 +184,6 @@ class _AddProductState extends State<AddProduct> {
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(),
                           labelText: 'Enter your price',
-
                           prefixIcon: Icon(Icons.person),
                           labelStyle: TextStyle(
                             color: Colors.white,
