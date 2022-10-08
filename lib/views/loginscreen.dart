@@ -35,7 +35,6 @@ class _loginscreenState extends State<loginscreen> {
 
     Future<void> LoginOfuser(String email, password) async {
       var jsonResponse;
-
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.reload();
       Map data = {

@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ffi';
-import 'package:api_app/model/model.dart';
+
 import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/views/editproduct.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +13,7 @@ import 'dart:math';
 import 'package:api_app/views/homescreen.dart';
 
 import '../AppConfig/Appconfig.dart';
+import '../model/post.dart';
 
 class ProductList extends StatefulWidget {
   ProductList({Key? key, String? token}) : super(key: key);

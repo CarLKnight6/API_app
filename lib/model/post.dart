@@ -10,3 +10,10 @@ class Product {
       required this.name,
       required this.price});
 }
+
+class Logindetails {
+  String email;
+  String password;
+
+  Logindetails({required this.email, required this.password});
+}
