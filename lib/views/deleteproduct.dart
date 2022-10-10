@@ -91,7 +91,7 @@ class _DeleteProductState extends State<DeleteProduct> {
               icon: Icon(Icons.arrow_back),
             ),
             centerTitle: true,
-            title: Text('DELETE A PRODUCT'),
+            title: Text('Delete Product'),
             backgroundColor: Colors.transparent,
           ),
           body: FractionallySizedBox(

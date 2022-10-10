@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             title: Text('Home Page'),
             backgroundColor: Colors.transparent,
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen>
                 DrawerHeader(
                   child: Text('MENU', style: TextStyle(color: Colors.white)),
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(8, 120, 93, 3),
+                    color: Colors.transparent,
                   ),
                 ),
                 ListTile(
@@ -107,101 +108,105 @@ class _HomeScreenState extends State<HomeScreen>
               ],
             ),
           ),
-          body: AnimatedBackground(
-            vsync: this,
-            behaviour: RandomParticleBehaviour(options: AppConfig().particles),
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                // decoration: BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage("assets/images/bg1.jpg"),
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: Container(
-                        width: double.infinity,
-                        child: TextFormField(
-                          readOnly: true,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          enableInteractiveSelection: false,
-                          decoration: InputDecoration(
-                            labelText:
-                                'WELCOME USER $token', //$currentuseremail
-                            prefixIcon: Icon(Icons.person),
-                            labelStyle: TextStyle(
+          body:
+              // AnimatedBackground(
+              //   vsync: this,
+              //   behaviour: RandomParticleBehaviour(options: AppConfig().particles),
+              //   child:
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/bg2.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        child: Container(
+                          width: double.infinity,
+                          child: TextFormField(
+                            readOnly: true,
+                            style: TextStyle(
                               color: Colors.white,
                             ),
+                            enableInteractiveSelection: false,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'WELCOME USER $token', //$currentuseremail
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                              ),
 
-                            //when error has occured
-                            errorStyle: TextStyle(
-                              color: Colors.red,
+                              //when error has occured
+                              errorStyle: TextStyle(
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProductList(token: token)));
-                          Navigator.pushNamed(context, '/productlist');
-                        },
-                        color: Colors.black.withOpacity(0.05),
-                        textColor: Colors.white,
-                        child: Text(
-                          "Product List",
+                      SizedBox(
+                        width: double.infinity,
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductList(token: token)));
+                            Navigator.pushNamed(context, '/productlist');
+                          },
+                          color: Colors.black.withOpacity(0.05),
+                          textColor: Colors.white,
+                          child: Text(
+                            "Product List",
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddProduct(token: token)));
-                          Navigator.pushNamed(context, '/addproduct');
-                          print(token);
-                        },
-                        color: Colors.black.withOpacity(0.05),
-                        textColor: Colors.white,
-                        child: Text(
-                          "Add Product",
-                          // style: GoogleFonts.droidSans(
-                          //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: double.infinity,
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    AddProduct(token: token)));
+                            Navigator.pushNamed(context, '/addproduct');
+                            print(token);
+                          },
+                          color: Colors.black.withOpacity(0.05),
+                          textColor: Colors.white,
+                          child: Text(
+                            "Add Product",
+                            // style: GoogleFonts.droidSans(
+                            //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MaterialButton(
-                        onPressed: () {
-                          //VIDEOCHATSCREEN FUNCTION
-                          Navigator.pushNamed(context, '/deleteproduct');
-                        },
-                        color: Colors.black.withOpacity(0.05),
-                        textColor: Colors.white,
-                        child: Text(
-                          "Delete Product",
-                          // style: GoogleFonts.droidSans(
-                          //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: double.infinity,
+                        child: MaterialButton(
+                          onPressed: () {
+                            //VIDEOCHATSCREEN FUNCTION
+                            Navigator.pushNamed(context, '/deleteproduct');
+                          },
+                          color: Colors.black.withOpacity(0.05),
+                          textColor: Colors.white,
+                          child: Text(
+                            "Delete Product",
+                            // style: GoogleFonts.droidSans(
+                            //     fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )),
-          ),
+                    ],
+                  )),
+          // ),
         ),
         onWillPop: () async {
           return false;

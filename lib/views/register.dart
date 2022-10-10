@@ -217,8 +217,12 @@ class _registrationscreenState extends State<registrationscreen> {
 
         Navigator.pushNamed(context, '/');
         // ignore: avoid_print
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Successfully registered')));
         print('success');
       } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Invalid Data')));
         print('error');
       }
     }
@@ -228,11 +232,11 @@ class _registrationscreenState extends State<registrationscreen> {
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/loginscreen');
+                Navigator.pushNamed(context, '/');
               },
               icon: Icon(Icons.arrow_back),
             ),
-            title: Text('padayon'),
+            title: Text('Create Account'),
             backgroundColor: Color.fromRGBO(8, 120, 93, 3),
           ),
           body: Container(

@@ -75,6 +75,7 @@ class _ProductListState extends State<ProductList> {
 
     return WillPopScope(
       child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -82,7 +83,7 @@ class _ProductListState extends State<ProductList> {
               },
               icon: Icon(Icons.arrow_back),
             ),
-            title: Text('padayon'),
+            title: Text('Product List'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.arrow_left),
@@ -119,97 +120,125 @@ class _ProductListState extends State<ProductList> {
                 },
               ),
             ],
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            backgroundColor: Colors.transparent,
           ),
-          body: FutureBuilder<List<Product>>(
-            future: getAllProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                List<Product> products = snapshot.data!;
-                return ListView.builder(
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      Product product = products[index];
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bg2.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: FutureBuilder<List<Product>>(
+              future: getAllProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  List<Product> products = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        Product product = products[index];
 
-                      return InkWell(
-                        onTap: () {
-                          print(product.id);
-                          var product_id = product.id;
-                          var product_name = product.name;
-                          var product_price = product.price;
-                          var product_userid = product.user_id;
-                          Navigator.of(context)
-                              .push(
-                            MaterialPageRoute(
-                              builder: (context) => EditProduct(product_id,
-                                  product_name, product_price, product_userid),
+                        return InkWell(
+                          onTap: () {
+                            print(product.id);
+                            var product_id = product.id;
+                            var product_name = product.name;
+                            var product_price = product.price;
+                            var product_userid = product.user_id;
+                            Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                builder: (context) => EditProduct(
+                                    product_id,
+                                    product_name,
+                                    product_price,
+                                    product_userid),
+                              ),
+                            )
+                                .then((value) {
+                              setState(() {});
+                            });
+                          },
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide.merge(
+                                  BorderSide(
+                                      width: 1.5,
+                                      color: Colors.transparent,
+                                      style: BorderStyle.solid),
+                                  BorderSide(
+                                      width: 1.5,
+                                      color: Colors.transparent,
+                                      style: BorderStyle.solid)),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          )
-                              .then((value) {
-                            setState(() {});
-                          });
-                        },
-                        child: Card(
-                          color: Color.fromARGB(255, 218, 211, 149),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Product name: ${product.name}',
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontFamily: "lato",
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    'product price: ${product.price}',
+                            // color: Color.fromARGB(255, 218, 211, 149),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Product name: ${product.name}',
                                     style: TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 24.0,
                                       fontFamily: "lato",
-                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(221, 244, 238, 238),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    'Product ID: ${product.id.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontFamily: "lato",
-                                      color: Colors.black87,
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'product price: ${product.price}',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: "lato",
+                                        color:
+                                            Color.fromARGB(221, 244, 238, 238),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    'Product USER ID: ${product.user_id.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontFamily: "lato",
-                                      color: Colors.black87,
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'Product ID: ${product.id.toString()}',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: "lato",
+                                        color:
+                                            Color.fromARGB(221, 244, 238, 238),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'Product USER ID: ${product.user_id.toString()}',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: "lato",
+                                        color:
+                                            Color.fromARGB(221, 244, 238, 238),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    });
-              }
-            },
+                        );
+                      });
+                }
+              },
+            ),
           )),
       onWillPop: () async {
         return false;
