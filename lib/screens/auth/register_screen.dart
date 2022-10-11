@@ -7,16 +7,16 @@ import 'dart:ui';
 
 import 'dart:math';
 
-import '../AppConfig/Appconfig.dart';
+import '../../AppConfig/Appconfig.dart';
 
-class registrationscreen extends StatefulWidget {
-  const registrationscreen({Key? key}) : super(key: key);
+class register_screen extends StatefulWidget {
+  const register_screen({Key? key}) : super(key: key);
 
   @override
-  _registrationscreenState createState() => _registrationscreenState();
+  _register_screenState createState() => _register_screenState();
 }
 
-class _registrationscreenState extends State<registrationscreen> {
+class _register_screenState extends State<register_screen> {
   @override
   void initState() {
     super.initState();
@@ -80,7 +80,7 @@ class _registrationscreenState extends State<registrationscreen> {
         child: Text("OK"),
         onPressed: () {
           clearText();
-          Navigator.pushNamed(context, '/registrationscreen');
+          Navigator.pushNamed(context, '/register_screen');
         },
       );
 
@@ -108,7 +108,7 @@ class _registrationscreenState extends State<registrationscreen> {
         child: Text("OK"),
         onPressed: () {
           clearText();
-          Navigator.pushNamed(context, '/registrationscreen');
+          Navigator.pushNamed(context, '/register_screen');
         },
       );
 
@@ -164,7 +164,7 @@ class _registrationscreenState extends State<registrationscreen> {
         child: Text("OK"),
         onPressed: () {
           clearText();
-          Navigator.pushNamed(context, '/registrationscreen');
+          Navigator.pushNamed(context, '/register_screen');
         },
       );
 

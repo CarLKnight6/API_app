@@ -8,18 +8,18 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
-import 'package:api_app/views/homescreen.dart';
+import 'package:api_app/screens/home_screen.dart';
 
-import '../AppConfig/Appconfig.dart';
+import '../../AppConfig/Appconfig.dart';
 
-class AddProduct extends StatefulWidget {
-  AddProduct({Key? key, String? token}) : super(key: key);
+class add_product_screen extends StatefulWidget {
+  add_product_screen({Key? key, String? token}) : super(key: key);
 
   @override
-  _AddProductState createState() => _AddProductState();
+  _add_product_screenState createState() => _add_product_screenState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _add_product_screenState extends State<add_product_screen> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
@@ -40,51 +40,51 @@ class _AddProductState extends State<AddProduct> {
       super.initState();
     }
 
-    // Future<void> AddProduct(String name, String image_link, String description,
-    //     String price, bool is_published) async {
-    //   var jsonResponse;
-    //   Map data = {
-    //     'name': namecontroller.text,
-    //     'image_link': imagelink_descriptioncontroller.text,
-    //     'description': imagelink_descriptioncontroller.text,
-    //     'price': pricecontroller.text,
-    //     'is_published': false
-    //   };
-    //   print(data);
-    //   print("the first token $token");
+    Future<void> add_product(String name, String image_link, String description,
+        String price, bool is_published) async {
+      var jsonResponse;
+      Map data = {
+        'name': namecontroller.text,
+        'image_link': imagelink_descriptioncontroller.text,
+        'description': imagelink_descriptioncontroller.text,
+        'price': pricecontroller.text,
+        'is_published': false
+      };
+      print(data);
+      print("the first token $token");
 
-    //   String body = json.encode(data);
-    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
-    //   var response = await http.post(
-    //     url,
-    //     body: body,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Authorization": 'Bearer $token'
-    //     },
-    //   );
-    //   print("token $token");
-    //   print(response.body);
-    //   print(response.statusCode);
+      String body = json.encode(data);
+      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
+      var response = await http.post(
+        url,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          "accept": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Authorization": 'Bearer $token'
+        },
+      );
+      print("token $token");
+      print(response.body);
+      print(response.statusCode);
 
-    //   if (response.statusCode == 201) {
-    //     jsonResponse = json.decode(response.body.toString());
+      if (response.statusCode == 201) {
+        jsonResponse = json.decode(response.body.toString());
 
-    //     Navigator.pushNamed(context, '/homescreen');
+        Navigator.pushNamed(context, '/homescreen');
 
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('Successfully added the product')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Successfully added the product')));
 
-    //     // ignore: avoid_print
-    //     print('success');
-    //   } else {
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Incomplete data given')));
-    //     print('error');
-    //   }
-    // }
+        // ignore: avoid_print
+        print('success');
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Incomplete data given')));
+        print('error');
+      }
+    }
 
     return WillPopScope(
       child: Scaffold(
@@ -241,31 +241,29 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: () {
                         // if (_formKey2.currentState!.validate()) {
                         //addprod here
-                        if (namecontroller.text.isNotEmpty &&
-                            imagelink_descriptioncontroller.text.isNotEmpty &&
-                            pricecontroller.text.isNotEmpty) {
-                          AuthServices().AddProduct(
-                              namecontroller.text,
-                              imagelink_descriptioncontroller.text,
-                              imagelink_descriptioncontroller.text,
-                              pricecontroller.text,
-                              false);
+                        // if (namecontroller.text.isNotEmpty &&
+                        //     imagelink_descriptioncontroller.text.isNotEmpty &&
+                        //     pricecontroller.text.isNotEmpty) {
+                        //   AuthServices().AddProduct(
+                        //       namecontroller.text,
+                        //       imagelink_descriptioncontroller.text,
+                        //       imagelink_descriptioncontroller.text,
+                        //       pricecontroller.text,
+                        //       false);
 
-                          Navigator.pushNamed(context, '/homescreen');
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Sucessfully Added product')));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Incomplete Product details')));
-                        }
-                        // AddProduct(
-                        //     namecontroller.text,
-                        //     imagelink_descriptioncontroller.text,
-                        //     imagelink_descriptioncontroller.text,
-                        //     pricecontroller.text,
-                        //     false);
-
+                        //   Navigator.pushNamed(context, '/homescreen');
+                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //       content: Text('Sucessfully Added product')));
+                        // } else {
+                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //       content: Text('Incomplete Product details')));
                         // }
+                        add_product(
+                            namecontroller.text,
+                            imagelink_descriptioncontroller.text,
+                            imagelink_descriptioncontroller.text,
+                            pricecontroller.text,
+                            false);
                       },
                       color: Colors.black.withOpacity(0.05),
                       textColor: Colors.white,

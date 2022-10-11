@@ -8,12 +8,12 @@ import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class loginscreen extends StatefulWidget {
+class login_screen extends StatefulWidget {
   @override
-  _loginscreenState createState() => _loginscreenState();
+  _login_screenState createState() => _login_screenState();
 }
 
-class _loginscreenState extends State<loginscreen> {
+class _login_screenState extends State<login_screen> {
   // @override
   // void initState() {
   //   super.initState();
@@ -34,58 +34,58 @@ class _loginscreenState extends State<loginscreen> {
       logpasswordcontroller.clear();
     }
 
-    // Future<void> LoginOfuser(String email, password) async {
-    //   var jsonResponse;
-    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   prefs.reload();
-    //   Map data = {
-    //     'email': logemailcontroller.text,
-    //     'password': logpasswordcontroller.text,
-    //   };
+    Future<void> LoginOfuser(String email, password) async {
+      var jsonResponse;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.reload();
+      Map data = {
+        'email': logemailcontroller.text,
+        'password': logpasswordcontroller.text,
+      };
 
-    //   String body = json.encode(data);
-    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
-    //   var response = await http.post(
-    //     url,
-    //     body: body,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*"
-    //     },
-    //   ).timeout(Duration(seconds: 10));
+      String body = json.encode(data);
+      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
+      var response = await http.post(
+        url,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          "accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+      ).timeout(Duration(seconds: 10));
 
-    //   print(response.body);
-    //   // print(response.body["token"]);
-    //   // prefs.setString("token", jsonResponse['response']['token']);
-    //   print('access token is -> ${json.decode(response.body)['token']}');
+      print(response.body);
+      // print(response.body["token"]);
+      // prefs.setString("token", jsonResponse['response']['token']);
+      print('access token is -> ${json.decode(response.body)['token']}');
 
-    //   print(response.statusCode);
+      print(response.statusCode);
 
-    //   if (response.statusCode == 201) {
-    //     jsonResponse = json.decode(response.body.toString());
-    //     prefs.setString("token", json.decode(response.body)['token']);
-    //     Navigator.pushNamed(context, '/homescreen');
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Logged in success')));
-    //     print('error');
-    //     // ignore: avoid_print
+      if (response.statusCode == 201) {
+        jsonResponse = json.decode(response.body.toString());
+        prefs.setString("token", json.decode(response.body)['token']);
+        Navigator.pushNamed(context, '/homescreen');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Logged in success')));
+        print('error');
+        // ignore: avoid_print
 
-    //     print('success ${jsonResponse['user']['name']}');
-    //     print('success');
-    //   } else {
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Check your credentials')));
-    //     print('error');
-    //   }
-    // }
+        print('success ${jsonResponse['user']['name']}');
+        print('success');
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Check your credentials')));
+        print('error');
+      }
+    }
 
-    // String? validateEmail(String? formEmail) {
-    //   if (formEmail == null || formEmail.isEmpty)
-    //     return 'E-mail address is required.';
+    String? validateEmail(String? formEmail) {
+      if (formEmail == null || formEmail.isEmpty)
+        return 'E-mail address is required.';
 
-    //   return null;
-    // }
+      return null;
+    }
 
     return WillPopScope(
         child: Scaffold(
@@ -180,7 +180,7 @@ class _loginscreenState extends State<loginscreen> {
                         //     logpasswordcontroller.text);
                         if (logemailcontroller.text.isNotEmpty &&
                             logpasswordcontroller.text.isNotEmpty) {
-                          AuthServices().LoginOfuser(logemailcontroller.text,
+                          LoginOfuser(logemailcontroller.text,
                               logpasswordcontroller.text);
                           Navigator.pushNamed(context, '/homescreen');
                           ScaffoldMessenger.of(context).showSnackBar(

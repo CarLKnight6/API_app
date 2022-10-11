@@ -4,26 +4,26 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:api_app/services/AuthServices.dart';
-import 'package:api_app/views/editproduct.dart';
+import 'package:api_app/screens/product/edit_product_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
-import 'package:api_app/views/homescreen.dart';
+import 'package:api_app/screens/home_screen.dart';
 
-import '../AppConfig/Appconfig.dart';
-import '../model/post.dart';
+import '../../AppConfig/Appconfig.dart';
+import '../../model/models.dart';
 
-class ProductList extends StatefulWidget {
-  ProductList({Key? key, String? token}) : super(key: key);
+class product_list_screen extends StatefulWidget {
+  product_list_screen({Key? key, String? token}) : super(key: key);
 
   @override
-  _ProductListState createState() => _ProductListState();
+  _product_list_screenState createState() => _product_list_screenState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _product_list_screenState extends State<product_list_screen> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
@@ -154,7 +154,7 @@ class _ProductListState extends State<ProductList> {
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(
-                                builder: (context) => EditProduct(
+                                builder: (context) => edit_product_screen(
                                     product_id,
                                     product_name,
                                     product_price,

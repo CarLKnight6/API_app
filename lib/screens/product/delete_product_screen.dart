@@ -7,18 +7,18 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
-import 'package:api_app/views/homescreen.dart';
+import 'package:api_app/screens/home_screen.dart';
 
-import '../AppConfig/Appconfig.dart';
+import '../../AppConfig/Appconfig.dart';
 
-class DeleteProduct extends StatefulWidget {
-  DeleteProduct({Key? key, String? token}) : super(key: key);
+class delete_product_screen extends StatefulWidget {
+  delete_product_screen({Key? key, String? token}) : super(key: key);
 
   @override
-  _DeleteProductState createState() => _DeleteProductState();
+  _delete_product_screenState createState() => _delete_product_screenState();
 }
 
-class _DeleteProductState extends State<DeleteProduct> {
+class _delete_product_screenState extends State<delete_product_screen> {
   final _formKey2 = GlobalKey<FormState>();
   String deleterespo = '1';
   final imagelink_descriptioncontroller = TextEditingController();
@@ -39,7 +39,7 @@ class _DeleteProductState extends State<DeleteProduct> {
       super.initState();
     }
 
-    Future<void> DeleteProduct(String id) async {
+    Future<void> delete_product_screen(String id) async {
       var jsonResponse;
       Map data = {
         'id': productidcontroller.text,
@@ -170,10 +170,10 @@ class _DeleteProductState extends State<DeleteProduct> {
                       onPressed: () {
                         // if (_formKey2.currentState!.validate()) {
                         //add delete function here
-                        DeleteProduct(productidcontroller.text);
+                        delete_product_screen(productidcontroller.text);
                         print(productidcontroller.text);
 
-                        // DeleteProduct(
+                        // delete_product_screen(
                         //     productidcontroller.text,
                         //     imagelink_descriptioncontroller.text,
                         //     imagelink_descriptioncontroller.text,

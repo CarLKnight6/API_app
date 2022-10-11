@@ -3,32 +3,32 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
-import 'package:api_app/model/post.dart';
+import 'package:api_app/model/models.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
-import 'package:api_app/views/homescreen.dart';
+import 'package:api_app/screens/home_screen.dart';
 
-import '../AppConfig/Appconfig.dart';
+import '../../AppConfig/Appconfig.dart';
 
-class EditProduct extends StatefulWidget {
-  // EditProduct({Key? key, String? token}) : super(key: key);
+class edit_product_screen extends StatefulWidget {
+  // edit_product_screen({Key? key, String? token}) : super(key: key);
 
   int product_id;
   String product_name;
   String product_price;
   int product_userid;
 
-  EditProduct(this.product_id, this.product_name, this.product_price,
+  edit_product_screen(this.product_id, this.product_name, this.product_price,
       this.product_userid);
 
   @override
-  _EditProductState createState() => _EditProductState();
+  _edit_product_screenState createState() => _edit_product_screenState();
 }
 
-class _EditProductState extends State<EditProduct> {
+class _edit_product_screenState extends State<edit_product_screen> {
   late int captured_product_id;
   late String captured_product_name;
   late String captured_product_price;
@@ -73,8 +73,8 @@ class _EditProductState extends State<EditProduct> {
       _debounce = 0 as Timer;
     }
 
-    Future<void> EditProduct(String name, String image_link, String description,
-        String price, bool is_published) async {
+    Future<void> edit_product_screen(String name, String image_link,
+        String description, String price, bool is_published) async {
       var jsonResponse;
       Map data = {
         'name': productnamecontroller.text,
@@ -266,7 +266,7 @@ class _EditProductState extends State<EditProduct> {
 
                         // fetchProducts();
                         _search();
-                        EditProduct(
+                        edit_product_screen(
                             productnamecontroller.text,
                             imagelink_descriptioncontroller.text,
                             imagelink_descriptioncontroller.text,
