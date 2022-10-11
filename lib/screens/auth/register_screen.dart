@@ -46,146 +46,6 @@ class _register_screenState extends State<register_screen> {
 
   @override
   Widget build(BuildContext context) {
-    showAlertDialog(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          clearText();
-          Navigator.pushNamed(context, '/loginscreen');
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: Text("padayon:"),
-        content: Text("Successfully registered!"),
-        actions: [
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-
-    showAlertDialog2passwordweak(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          clearText();
-          Navigator.pushNamed(context, '/register_screen');
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert2 = AlertDialog(
-        title: Text("padayon:"),
-        content: Text("password is too weak!"),
-        actions: [
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert2;
-        },
-      );
-    }
-
-    showAlertDialog2emailalreadyexist(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          clearText();
-          Navigator.pushNamed(context, '/register_screen');
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert3 = AlertDialog(
-        title: Text("padayon:"),
-        content: Text("email already exists!"),
-        actions: [
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert3;
-        },
-      );
-    }
-
-    showAlertDialoginvalidemail(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          clearText();
-          Navigator.pop(context);
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert4 = AlertDialog(
-        title: Text("padayon:"),
-        content: Text("Invalid email address provided!"),
-        actions: [
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert4;
-        },
-      );
-    }
-
-    showAlertDialog2invalidentry(BuildContext context) {
-      // set up the button
-      Widget okButton = TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          clearText();
-          Navigator.pushNamed(context, '/register_screen');
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert4 = AlertDialog(
-        title: Text("padayon:"),
-        content: Text("please check again!"),
-        actions: [
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert4;
-        },
-      );
-    }
-
     Future<void> RegisterOfuser(
         String name, email, password, password_confirmation) async {
       var jsonResponse;
@@ -361,23 +221,12 @@ class _register_screenState extends State<register_screen> {
                   MaterialButton(
                     onPressed: () {
                       // if (_formKey2.currentState!.validate()) {
-                      if (regemailcontroller.text.isEmpty &&
-                          regpasswordcontroller.text.isEmpty &&
-                          namecontroller.text.isEmpty) {
-                        showAlertDialog2invalidentry(context);
-                      } else if (namecontroller.text.isEmpty) {
-                        showAlertDialog2invalidentry(context);
-                      } else if (regemailcontroller.text.isEmpty) {
-                        showAlertDialoginvalidemail(context);
-                      } else if (regpasswordcontroller.text.isEmpty) {
-                        showAlertDialog2invalidentry(context);
-                      } else {
-                        RegisterOfuser(
-                            namecontroller.text,
-                            regemailcontroller.text,
-                            regpasswordcontroller.text,
-                            regemailcontroller.text);
-                      }
+
+                      RegisterOfuser(
+                          namecontroller.text,
+                          regemailcontroller.text,
+                          regpasswordcontroller.text,
+                          regemailcontroller.text);
 
                       // }
                     },

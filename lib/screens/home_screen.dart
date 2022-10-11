@@ -18,8 +18,7 @@ class home_screen extends StatefulWidget {
   _home_screenState createState() => _home_screenState();
 }
 
-class _home_screenState extends State<home_screen>
-    with SingleTickerProviderStateMixin {
+class _home_screenState extends State<home_screen> {
   // String token = "";
 
   @override
@@ -160,8 +159,7 @@ class _home_screenState extends State<home_screen>
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     product_list_screen(token: token)));
-                            Navigator.pushNamed(
-                                context, '/product_list_screen');
+                            Navigator.pushNamed(context, '/productlist');
                           },
                           color: Colors.black.withOpacity(0.05),
                           textColor: Colors.white,
@@ -177,7 +175,7 @@ class _home_screenState extends State<home_screen>
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     add_product_screen(token: token)));
-                            Navigator.pushNamed(context, '/add_product_screen');
+                            Navigator.pushNamed(context, '/addproduct');
                             print(token);
                           },
                           color: Colors.black.withOpacity(0.05),
