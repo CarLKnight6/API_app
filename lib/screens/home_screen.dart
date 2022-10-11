@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'dart:io';
-import 'package:animated_background/animated_background.dart';
 import 'package:api_app/AppConfig/Appconfig.dart';
-import 'package:api_app/views/addproduct.dart';
-import 'package:api_app/views/productlist.dart';
+import 'package:api_app/services/AuthServices.dart';
+import 'package:api_app/screens/product/add_product_screen.dart';
+import 'package:api_app/screens/product/product_list_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -36,35 +36,35 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  Future<void> LogoutOfuser() async {
-    var jsonResponse;
+  // Future<void> LogoutOfuser() async {
+  //   var jsonResponse;
 
-    Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/logout");
-    var response = await http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": 'Bearer $token'
-      },
-    );
+  //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/logout");
+  //   var response = await http.post(
+  //     url,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "accept": "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //       "Authorization": 'Bearer $token'
+  //     },
+  //   );
 
-    print(response.body);
-    print(response.statusCode);
+  //   print(response.body);
+  //   print(response.statusCode);
 
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body.toString());
+  //   if (response.statusCode == 200) {
+  //     jsonResponse = json.decode(response.body.toString());
 
-      Navigator.pushNamed(context, '/');
-      // ignore: avoid_print
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Account logged out')));
-      print('success');
-    } else {
-      print('error');
-    }
-  }
+  //     Navigator.pushNamed(context, '/');
+  //     // ignore: avoid_print
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(SnackBar(content: Text('Account logged out')));
+  //     print('success');
+  //   } else {
+  //     print('error');
+  //   }
+  // }
 
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ListTile(
                   title: Text('Sign Out'),
                   onTap: () {
-                    LogoutOfuser();
+                    AuthServices().LogoutOfuser();
 
                     // Update the state of the app.
                     // ...

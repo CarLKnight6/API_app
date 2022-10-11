@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:api_app/AppConfig/Appconfig.dart';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
@@ -33,51 +34,51 @@ class _loginscreenState extends State<loginscreen> {
       logpasswordcontroller.clear();
     }
 
-    Future<void> LoginOfuser(String email, password) async {
-      var jsonResponse;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.reload();
-      Map data = {
-        'email': logemailcontroller.text,
-        'password': logpasswordcontroller.text,
-      };
+    // Future<void> LoginOfuser(String email, password) async {
+    //   var jsonResponse;
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   prefs.reload();
+    //   Map data = {
+    //     'email': logemailcontroller.text,
+    //     'password': logpasswordcontroller.text,
+    //   };
 
-      String body = json.encode(data);
-      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
-      var response = await http.post(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
-      ).timeout(Duration(seconds: 10));
+    //   String body = json.encode(data);
+    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
+    //   var response = await http.post(
+    //     url,
+    //     body: body,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*"
+    //     },
+    //   ).timeout(Duration(seconds: 10));
 
-      print(response.body);
-      // print(response.body["token"]);
-      // prefs.setString("token", jsonResponse['response']['token']);
-      print('access token is -> ${json.decode(response.body)['token']}');
+    //   print(response.body);
+    //   // print(response.body["token"]);
+    //   // prefs.setString("token", jsonResponse['response']['token']);
+    //   print('access token is -> ${json.decode(response.body)['token']}');
 
-      print(response.statusCode);
+    //   print(response.statusCode);
 
-      if (response.statusCode == 201) {
-        jsonResponse = json.decode(response.body.toString());
-        prefs.setString("token", json.decode(response.body)['token']);
-        Navigator.pushNamed(context, '/homescreen');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Logged in success')));
-        print('error');
-        // ignore: avoid_print
+    //   if (response.statusCode == 201) {
+    //     jsonResponse = json.decode(response.body.toString());
+    //     prefs.setString("token", json.decode(response.body)['token']);
+    //     Navigator.pushNamed(context, '/homescreen');
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Logged in success')));
+    //     print('error');
+    //     // ignore: avoid_print
 
-        print('success ${jsonResponse['user']['name']}');
-        print('success');
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Check your credentials')));
-        print('error');
-      }
-    }
+    //     print('success ${jsonResponse['user']['name']}');
+    //     print('success');
+    //   } else {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Check your credentials')));
+    //     print('error');
+    //   }
+    // }
 
     // String? validateEmail(String? formEmail) {
     //   if (formEmail == null || formEmail.isEmpty)
@@ -175,8 +176,19 @@ class _loginscreenState extends State<loginscreen> {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        LoginOfuser(logemailcontroller.text,
-                            logpasswordcontroller.text);
+                        // LoginOfuser(logemailcontroller.text,
+                        //     logpasswordcontroller.text);
+                        if (logemailcontroller.text.isNotEmpty &&
+                            logpasswordcontroller.text.isNotEmpty) {
+                          AuthServices().LoginOfuser(logemailcontroller.text,
+                              logpasswordcontroller.text);
+                          Navigator.pushNamed(context, '/homescreen');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Sucessfully Logged in')));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Check your credentials')));
+                        }
 
                         //login function button
                       },

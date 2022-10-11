@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -39,51 +40,51 @@ class _AddProductState extends State<AddProduct> {
       super.initState();
     }
 
-    Future<void> AddProduct(String name, String image_link, String description,
-        String price, bool is_published) async {
-      var jsonResponse;
-      Map data = {
-        'name': namecontroller.text,
-        'image_link': imagelink_descriptioncontroller.text,
-        'description': imagelink_descriptioncontroller.text,
-        'price': pricecontroller.text,
-        'is_published': false
-      };
-      print(data);
-      print("the first token $token");
+    // Future<void> AddProduct(String name, String image_link, String description,
+    //     String price, bool is_published) async {
+    //   var jsonResponse;
+    //   Map data = {
+    //     'name': namecontroller.text,
+    //     'image_link': imagelink_descriptioncontroller.text,
+    //     'description': imagelink_descriptioncontroller.text,
+    //     'price': pricecontroller.text,
+    //     'is_published': false
+    //   };
+    //   print(data);
+    //   print("the first token $token");
 
-      String body = json.encode(data);
-      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
-      var response = await http.post(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Authorization": 'Bearer $token'
-        },
-      );
-      print("token $token");
-      print(response.body);
-      print(response.statusCode);
+    //   String body = json.encode(data);
+    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
+    //   var response = await http.post(
+    //     url,
+    //     body: body,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Authorization": 'Bearer $token'
+    //     },
+    //   );
+    //   print("token $token");
+    //   print(response.body);
+    //   print(response.statusCode);
 
-      if (response.statusCode == 201) {
-        jsonResponse = json.decode(response.body.toString());
+    //   if (response.statusCode == 201) {
+    //     jsonResponse = json.decode(response.body.toString());
 
-        Navigator.pushNamed(context, '/homescreen');
+    //     Navigator.pushNamed(context, '/homescreen');
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Successfully added the product')));
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text('Successfully added the product')));
 
-        // ignore: avoid_print
-        print('success');
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Incomplete data given')));
-        print('error');
-      }
-    }
+    //     // ignore: avoid_print
+    //     print('success');
+    //   } else {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Incomplete data given')));
+    //     print('error');
+    //   }
+    // }
 
     return WillPopScope(
       child: Scaffold(
@@ -240,13 +241,29 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: () {
                         // if (_formKey2.currentState!.validate()) {
                         //addprod here
+                        if (namecontroller.text.isNotEmpty &&
+                            imagelink_descriptioncontroller.text.isNotEmpty &&
+                            pricecontroller.text.isNotEmpty) {
+                          AuthServices().AddProduct(
+                              namecontroller.text,
+                              imagelink_descriptioncontroller.text,
+                              imagelink_descriptioncontroller.text,
+                              pricecontroller.text,
+                              false);
 
-                        AddProduct(
-                            namecontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            pricecontroller.text,
-                            false);
+                          Navigator.pushNamed(context, '/homescreen');
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Sucessfully Added product')));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Incomplete Product details')));
+                        }
+                        // AddProduct(
+                        //     namecontroller.text,
+                        //     imagelink_descriptioncontroller.text,
+                        //     imagelink_descriptioncontroller.text,
+                        //     pricecontroller.text,
+                        //     false);
 
                         // }
                       },
