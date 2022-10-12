@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:api_app/services/getToken.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,23 +16,22 @@ class main_screen extends StatefulWidget {
 
 class _main_screenState extends State<main_screen> {
   String? token2;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCred();
-  }
-
-  void getCred() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    setState(() {
-      token2 = pref.getString('token');
-    });
+    getToken();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(token2);
+    getToken().then((value) {
+      setState(() {
+        token2 = value;
+      });
+    });
+    // print('this ${getToken(tokenget!)}');
     return token2 != '' && token2 != null ? home_screen() : login_screen();
   }
 }

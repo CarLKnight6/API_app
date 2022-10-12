@@ -5,6 +5,7 @@ import 'package:api_app/AppConfig/Appconfig.dart';
 import 'package:api_app/screens/auth/register_screen.dart';
 import 'package:api_app/screens/home_screen.dart';
 import 'package:api_app/services/AuthServices.dart';
+import 'package:api_app/services/getToken.dart';
 import 'package:api_app/widgets/auth_textfield_widget.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -202,7 +203,7 @@ class _login_screenState extends State<login_screen> {
                     Button(
                       label: 'login',
                       formKey: _loginformKey,
-                      onPressed: () {
+                      onPressed: () async {
                         if (_loginformKey.currentState!.validate()) {
                           LoginOfuser(logemailcontroller.text,
                               logpasswordcontroller.text);
@@ -212,14 +213,6 @@ class _login_screenState extends State<login_screen> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Check your credentials')));
                         }
-
-                        // AuthServices().LoginOfuser(logemailcontroller.text,
-                        //     logpasswordcontroller.text);
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //     SnackBar(content: Text('Sucessfully Logged in')));
-                        // Navigator.pushNamed(context, '/homescreen');
-
-                        //login function button
                       },
                       // color: Colors.black.withOpacity(0.05),
                       // textColor: Colors.white,
