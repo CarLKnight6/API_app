@@ -8,13 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../AppConfig/Appconfig.dart';
 
 late String body;
+late String token;
 
 class AuthServices {
   Future<List<Logindetails>?> LoginOfuser(String email, password) async {
     var jsonResponse;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.reload();
+
     Map data = {
       'email': email,
       'password': password,
@@ -37,20 +38,12 @@ class AuthServices {
 
     if (response.statusCode == 201) {
       prefs.setString("token", json.decode(response.body)['token']);
-
+      token = prefs.getString('token')!;
       // ignore: avoid_print
       print('Response -> ${json.decode(response.body)}');
       print('success');
     } else {
       print('error');
-    }
-
-    loginupdate() async {
-      if (await response.statusCode == 201) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
 

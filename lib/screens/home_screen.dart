@@ -9,8 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-String? token;
+import '../widgets/button.dart';
 
 // ignore: must_be_immutable
 class home_screen extends StatefulWidget {
@@ -18,20 +17,31 @@ class home_screen extends StatefulWidget {
   _home_screenState createState() => _home_screenState();
 }
 
+String? token;
+
 class _home_screenState extends State<home_screen> {
   // String token = "";
 
   @override
   void initState() {
     super.initState();
+    // checkKey();
+    // deletetokenValue();
     getCred();
+  }
+
+  deletetokenValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    setState(() {
+      token = '';
+    });
   }
 
   void getCred() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      pref.reload();
-      token = pref.getString('token')!;
+      token = pref.getString('token');
     });
   }
 
@@ -54,8 +64,10 @@ class _home_screenState extends State<home_screen> {
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      deletetokenValue();
+      Navigator.pushNamed(context, '/loginscreen');
 
-      Navigator.pushNamed(context, '/');
       // ignore: avoid_print
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Account logged out')));
@@ -107,105 +119,72 @@ class _home_screenState extends State<home_screen> {
               ],
             ),
           ),
-          body:
-              // AnimatedBackground(
-              //   vsync: this,
-              //   behaviour: RandomParticleBehaviour(options: AppConfig().particles),
-              //   child:
-              Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/bg2.jpg"),
-                      fit: BoxFit.cover,
+          body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bg2.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Container(
+                      width: double.infinity,
+                      child: TextFormField(
+                        readOnly: true,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        enableInteractiveSelection: false,
+                        decoration: InputDecoration(
+                          labelText: 'WELCOME USER $token',
+                          prefixIcon: Icon(Icons.person),
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+
+                          //when error has occured
+                          errorStyle: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                        child: Container(
-                          width: double.infinity,
-                          child: TextFormField(
-                            readOnly: true,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                            enableInteractiveSelection: false,
-                            decoration: InputDecoration(
-                              labelText:
-                                  'WELCOME USER $token', //$currentuseremail
-                              prefixIcon: Icon(Icons.person),
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-
-                              //when error has occured
-                              errorStyle: TextStyle(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    product_list_screen(token: token)));
-                            Navigator.pushNamed(context, '/productlist');
-                          },
-                          color: Colors.black.withOpacity(0.05),
-                          textColor: Colors.white,
-                          child: Text(
-                            "Product List",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    add_product_screen(token: token)));
-                            Navigator.pushNamed(context, '/addproduct');
-                            print(token);
-                          },
-                          color: Colors.black.withOpacity(0.05),
-                          textColor: Colors.white,
-                          child: Text(
-                            "Add Product",
-                            // style: GoogleFonts.droidSans(
-                            //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MaterialButton(
-                          onPressed: () {
-                            //VIDEOCHATSCREEN FUNCTION
-                            Navigator.pushNamed(context, '/deleteproduct');
-                          },
-                          color: Colors.black.withOpacity(0.05),
-                          textColor: Colors.white,
-                          child: Text(
-                            "Delete Product",
-                            // style: GoogleFonts.droidSans(
-                            //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-          // ),
+                  Button(
+                    label: 'Product List',
+                    onPressed: () {
+                      print(token);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              product_list_screen(token: token)));
+                      Navigator.pushNamed(context, '/productlist');
+                    },
+                  ),
+                  Button(
+                    label: 'Add Product',
+                    onPressed: () {
+                      print(token);
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         add_product_screen(token: token)));
+                      Navigator.pushNamed(context, '/addproduct');
+                    },
+                  ),
+                  Button(
+                    label: 'Delete Product',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/deleteproduct');
+                    },
+                  )
+                ],
+              )),
         ),
         onWillPop: () async {
           return false;

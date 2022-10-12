@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'package:api_app/widgets/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -8,6 +9,7 @@ import 'dart:ui';
 import 'dart:math';
 
 import '../../AppConfig/Appconfig.dart';
+import '../../widgets/auth_textfield_widget.dart';
 
 class register_screen extends StatefulWidget {
   const register_screen({Key? key}) : super(key: key);
@@ -20,29 +22,25 @@ class _register_screenState extends State<register_screen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      namecontroller.clear();
-      namecontroller.text = getRandomString(10);
-    });
+    ;
   }
 
-  final _formKey2 = GlobalKey<FormState>();
+  final _regformKey = GlobalKey<FormState>();
 
   final regemailcontroller = TextEditingController();
 
   final regpasswordcontroller = TextEditingController();
+  final regconfirmpasswordcontroller = TextEditingController();
+
   var namecontroller = TextEditingController();
-  bool _randomtext = true;
   var donetext = 'done';
-  var _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+
   void clearText() {
     regemailcontroller.clear();
     regpasswordcontroller.clear();
+    regconfirmpasswordcontroller.clear();
+    namecontroller.clear();
   }
-
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,7 @@ class _register_screenState extends State<register_screen> {
         'name': namecontroller.text,
         'email': regemailcontroller.text,
         'password': regpasswordcontroller.text,
-        'password_confirmation': regpasswordcontroller.text
+        'password_confirmation': regconfirmpasswordcontroller.text
       };
       print(data);
 
@@ -89,157 +87,62 @@ class _register_screenState extends State<register_screen> {
 
     return WillPopScope(
       child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/loginscreen');
               },
               icon: Icon(Icons.arrow_back),
             ),
             title: Text('Create Account'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            backgroundColor: Colors.transparent,
           ),
-          body: Container(
-              key: _formKey2,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/bg1.jpg"),
-                  fit: BoxFit.cover,
+          body: Form(
+            key: _regformKey,
+            child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/bg1.jpg"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      readOnly: true,
-                      style: TextStyle(color: Colors.white),
-                      controller: namecontroller,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'press the box to get anon name';
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AuthTextFormField(
+                      textController: namecontroller,
+                      label: 'Name',
+                    ),
+                    AuthTextFormField(
+                      textController: regemailcontroller,
+                      label: 'Email',
+                    ),
+                    AuthTextFormField(
+                      textController: regpasswordcontroller,
+                      label: 'Password',
+                    ),
+                    AuthTextFormField(
+                      textController: regconfirmpasswordcontroller,
+                      label: 'Confirm Password',
+                    ),
+                    Button(
+                      label: 'Submit',
+                      formKey: _regformKey,
+                      onPressed: () {
+                        if (_regformKey.currentState!.validate()) {
+                          RegisterOfuser(
+                              namecontroller.text,
+                              regemailcontroller.text,
+                              regpasswordcontroller.text,
+                              regconfirmpasswordcontroller.text);
                         }
-                        return null;
                       },
-                      enableInteractiveSelection: false,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(_randomtext
-                              ? Icons.account_box
-                              : Icons.add_box_outlined),
-                          onPressed: () {
-                            namecontroller.clear();
-                            setState(() {
-                              namecontroller.clear();
-                              namecontroller.text =
-                                  getRandomString(10); // randomfunction here
-                            });
-                          },
-                        ),
-                        labelText: 'your name',
-                        prefixIcon: Icon(Icons.person),
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-
-                        //when error has occured
-                        errorStyle: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: regpasswordcontroller,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'password is required!';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Enter your password',
-                        prefixIcon: Icon(Icons.person),
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        //when error has occured
-                        // errorStyle: TextStyle(
-                        //   color: Colors.red,
-                        // ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: regemailcontroller,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'e-mail address is required.';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Enter your email address',
-
-                        prefixIcon: Icon(Icons.person),
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        //when error has occured
-                        // errorStyle: TextStyle(
-                        //   color: Colors.red,
-                        // ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          child: Text(
-                            '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                decoration: TextDecoration.underline),
-                          ),
-                          onPressed: () {
-                            // _launchURL3();
-                          })
-                    ],
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      // if (_formKey2.currentState!.validate()) {
-
-                      RegisterOfuser(
-                          namecontroller.text,
-                          regemailcontroller.text,
-                          regpasswordcontroller.text,
-                          regemailcontroller.text);
-
-                      // }
-                    },
-                    color: Colors.black.withOpacity(0.05),
-                    textColor: Colors.white,
-                    child: Text(
-                      donetext,
-                      // style: GoogleFonts.droidSans(
-                      //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              ))),
+                    )
+                  ],
+                )),
+          )),
       onWillPop: () async {
         return false;
       },

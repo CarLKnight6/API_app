@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:ffi';
 
-import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/screens/product/edit_product_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;

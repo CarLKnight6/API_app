@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
+import 'package:api_app/screens/main_screen.dart';
 import 'package:api_app/screens/product/add_product_screen.dart';
 import 'package:api_app/screens/product/delete_product_screen.dart';
 import 'package:api_app/screens/home_screen.dart';
@@ -24,7 +27,8 @@ class MyApp extends StatelessWidget {
       title: "api app",
       initialRoute: '/',
       routes: {
-        '/': (context) => login_screen(),
+        '/': (context) => main_screen(),
+        '/loginscreen': (context) => login_screen(),
         '/homescreen': (context) => home_screen(),
         '/register': (context) => register_screen(),
         '/deleteproduct': (context) => delete_product_screen(),
