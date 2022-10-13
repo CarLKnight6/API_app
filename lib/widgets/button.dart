@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Button extends StatelessWidget {
-  Button({
-    required this.label,
-    this.formKey,
-    required this.onPressed,
-  });
+  Button(
+      {required this.label,
+      this.formKey,
+      required this.onPressed,
+      this.validated,
+      this.isProcessing});
 
   final String label;
   final VoidCallback onPressed;
   final GlobalKey<FormState>? formKey;
-
+  final bool? isProcessing;
+  final Function()? validated;
   @override
   Widget build(BuildContext context) {
     return Row(children: [

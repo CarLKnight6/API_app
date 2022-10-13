@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/widgets/button.dart';
+import 'package:api_app/widgets/submit_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -23,7 +24,6 @@ class _register_screenState extends State<register_screen> {
   @override
   void initState() {
     super.initState();
-    ;
   }
 
   final _regformKey = GlobalKey<FormState>();
@@ -32,9 +32,18 @@ class _register_screenState extends State<register_screen> {
 
   final regpasswordcontroller = TextEditingController();
   final regconfirmpasswordcontroller = TextEditingController();
-
+  bool onPressedValue = true;
   var namecontroller = TextEditingController();
   var donetext = 'done';
+  bool _isProcessing = false;
+  @override
+  void dispose() {
+    namecontroller.dispose();
+    regemailcontroller.dispose();
+    regpasswordcontroller.dispose();
+    regconfirmpasswordcontroller.dispose();
+    super.dispose();
+  }
 
   void clearText() {
     regemailcontroller.clear();
@@ -128,19 +137,19 @@ class _register_screenState extends State<register_screen> {
                       textController: regconfirmpasswordcontroller,
                       label: 'Confirm Password',
                     ),
-                    Button(
-                      label: 'Submit',
-                      formKey: _regformKey,
-                      onPressed: () {
-                        if (_regformKey.currentState!.validate()) {
-                          AuthServices(context).RegisterOfuser(
-                              namecontroller.text,
-                              regemailcontroller.text,
-                              regpasswordcontroller.text,
-                              regconfirmpasswordcontroller.text);
-                        }
-                      },
-                    )
+                    SubmitButton(
+                        label: 'Submit',
+                        formKey: _regformKey,
+                        isProcessing: _isProcessing,
+                        validated: () {
+                          if (_regformKey.currentState!.validate()) {
+                            AuthServices(context).RegisterOfuser(
+                                namecontroller.text,
+                                regemailcontroller.text,
+                                regpasswordcontroller.text,
+                                regconfirmpasswordcontroller.text);
+                          }
+                        })
                   ],
                 )),
           )),

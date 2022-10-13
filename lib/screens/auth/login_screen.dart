@@ -39,6 +39,13 @@ class _login_screenState extends State<login_screen> {
       logpasswordcontroller.clear();
     }
 
+    @override
+    void dispose() {
+      logemailcontroller.dispose();
+      logpasswordcontroller.dispose();
+      super.dispose();
+    }
+
     // Future<void> LoginOfuser(String email, password) async {
     //   var jsonResponse;
     //   SharedPreferences prefs = await SharedPreferences.getInstance();

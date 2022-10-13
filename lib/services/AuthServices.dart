@@ -82,6 +82,7 @@ class AuthServices {
       jsonResponse = json.decode(response.body.toString());
 
       Navigator.pushNamed(context, '/loginscreen');
+
       // ignore: avoid_print
       ScaffoldMessenger.of(context)
           // ignore: prefer_const_constructors
