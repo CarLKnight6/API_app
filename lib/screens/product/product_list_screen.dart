@@ -38,6 +38,15 @@ class _product_list_screenState extends State<product_list_screen> {
     pricecontroller.clear();
   }
 
+  @override
+  void dispose() {
+    imagelink_descriptioncontroller.dispose();
+    pricecontroller.dispose();
+    ispublishedcontroller.dispose();
+    namecontroller.dispose();
+    super.dispose();
+  }
+
   // getprods = await AuthServices(context).getAllProducts(page);
   @override
   Widget build(BuildContext context) {

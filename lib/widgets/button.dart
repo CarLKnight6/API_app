@@ -8,14 +8,12 @@ class Button extends StatelessWidget {
       {required this.label,
       this.formKey,
       required this.onPressed,
-      this.validated,
       this.isProcessing});
 
   final String label;
   final VoidCallback onPressed;
   final GlobalKey<FormState>? formKey;
   final bool? isProcessing;
-  final Function()? validated;
   @override
   Widget build(BuildContext context) {
     return Row(children: [

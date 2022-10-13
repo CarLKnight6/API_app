@@ -134,6 +134,8 @@ class AuthServices {
       print('success');
     } else {
       print('error');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid product details')));
     }
   }
 
@@ -168,13 +170,13 @@ class AuthServices {
 
       Navigator.pushNamed(context, '/homescreen');
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Successfully deleted the product')));
+          const SnackBar(content: Text('Successfully deleted the product')));
 
       print('success');
     } else {
       print('error');
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Invalid credential')));
+          .showSnackBar(const SnackBar(content: Text('Invalid ID')));
     }
   }
 

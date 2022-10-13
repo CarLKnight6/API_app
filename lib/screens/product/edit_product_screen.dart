@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'package:api_app/model/models.dart';
 import 'package:api_app/services/AuthServices.dart';
+import 'package:api_app/widgets/button.dart';
+import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -43,7 +45,11 @@ class _edit_product_screenState extends State<edit_product_screen> {
   TextEditingController ispublishedcontroller = TextEditingController();
   var productidcontroller = TextEditingController();
   var productnamecontroller = TextEditingController();
-
+  TextEditingController _controller = TextEditingController();
+  final _editproductformKey = GlobalKey<FormState>();
+  late StreamController _streamController;
+  late Stream _stream;
+  late Timer _debounce;
   void clearText() {
     imagelink_descriptioncontroller.clear();
     pricecontroller.clear();
@@ -57,20 +63,24 @@ class _edit_product_screenState extends State<edit_product_screen> {
     captured_product_name = widget.product_name;
     captured_product_price = widget.product_price;
     captured_product_userid = widget.product_userid;
-    TextEditingController _controller = TextEditingController();
-
-    late StreamController _streamController;
-    late Stream _stream;
-    late Timer _debounce;
-
+    productidcontroller.text = captured_product_id.toString();
     _search() async {
       //search function here
       print(captured_product_id);
     }
 
     @override
+    void dispose() {
+      productnamecontroller.dispose();
+      imagelink_descriptioncontroller.dispose();
+      pricecontroller.dispose();
+      super.dispose();
+    }
+
+    @override
     void initState() {
       super.initState();
+
       _debounce = 0 as Timer;
     }
 
@@ -122,6 +132,7 @@ class _edit_product_screenState extends State<edit_product_screen> {
 
     return WillPopScope(
       child: Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -130,164 +141,68 @@ class _edit_product_screenState extends State<edit_product_screen> {
               icon: Icon(Icons.arrow_back),
             ),
             title: Text('Edit Product'),
-            backgroundColor: Color.fromRGBO(8, 120, 93, 3),
+            backgroundColor: Colors.transparent,
           ),
           body: FractionallySizedBox(
             alignment: Alignment.topCenter,
             widthFactor: 1,
             child: Container(
-                key: _formKey2,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/bg1.jpg"),
-                    fit: BoxFit.cover,
-                  ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bg1.jpg"),
+                  fit: BoxFit.cover,
                 ),
+              ),
+              child: Form(
+                key: _editproductformKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
+                    ProductTextFormField(
+                        enabled: false,
                         readOnly: true,
-                        style: TextStyle(color: Colors.white),
-                        // controller: productidcontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'press the box to get anon name';
-                          }
-                          return null;
-                        },
-                        enableInteractiveSelection: false,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Product ID  $captured_product_id',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-
-                          //when error has occured
-                          errorStyle: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
+                        hintText: captured_product_id.toString(),
+                        textController: productidcontroller,
+                        label: 'Product ID'),
+                    ProductTextFormField(
                         readOnly: false,
-                        style: TextStyle(color: Colors.white),
-                        controller: productnamecontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'press the box to get anon name';
-                          }
-                          return null;
-                        },
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-
-                          labelText:
-                              'current product name $captured_product_name',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-
-                          //when error has occured
-                          errorStyle: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        controller: imagelink_descriptioncontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'password is required!';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'current desc $captured_product_name',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        controller: pricecontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'e-mail address is required.';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'current price $captured_product_price',
-
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
-                    MaterialButton(
+                        hintText: captured_product_name,
+                        textController: productnamecontroller,
+                        label: 'Product Name'),
+                    ProductTextFormField(
+                        readOnly: false,
+                        hintText: captured_product_price,
+                        textController: pricecontroller,
+                        label: 'Price'),
+                    ProductTextFormField(
+                        readOnly: false,
+                        hintText: captured_product_name,
+                        textController: imagelink_descriptioncontroller,
+                        label: 'Description/Image Link'),
+                    Button(
+                      label: 'Update',
                       onPressed: () {
-                        // if (_formKey2.currentState!.validate()) {
-                        //addprod here
+                        if (_editproductformKey.currentState!.validate()) {
+                          //addprod here
 
-                        // fetchProducts();
-                        _search();
-                        AuthServices(context).edit_product_screen(
-                            captured_product_id,
-                            captured_product_userid,
-                            productnamecontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            pricecontroller.text,
-                            false);
-
-                        // }
+                          // fetchProducts();
+                          _search();
+                          AuthServices(context).edit_product_screen(
+                              captured_product_id,
+                              captured_product_userid,
+                              productnamecontroller.text,
+                              imagelink_descriptioncontroller.text,
+                              imagelink_descriptioncontroller.text,
+                              pricecontroller.text,
+                              false);
+                        }
                       },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        'UPDATE',
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
                     )
                   ],
-                )),
+                ),
+              ),
+            ),
           )),
       onWillPop: () async {
         return false;

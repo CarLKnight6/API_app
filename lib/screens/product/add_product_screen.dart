@@ -2,7 +2,10 @@
 
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/model/models.dart';
 import 'package:api_app/services/AuthServices.dart';
+import 'package:api_app/widgets/button.dart';
+import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -27,10 +30,19 @@ class _add_product_screenState extends State<add_product_screen> {
   final pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
   var namecontroller = TextEditingController();
-
+  final _productformKey = GlobalKey<FormState>();
   void clearText() {
     imagelink_descriptioncontroller.clear();
     pricecontroller.clear();
+  }
+
+  @override
+  void dispose() {
+    imagelink_descriptioncontroller.dispose();
+    ispublishedcontroller.dispose();
+    pricecontroller.dispose();
+    namecontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,169 +77,62 @@ class _add_product_screenState extends State<add_product_screen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        readOnly: false,
-                        style: TextStyle(color: Colors.white),
-                        controller: namecontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'press the box to get anon name';
-                          }
-                          return null;
-                        },
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'your product name',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
+                child: Form(
+                  key: _productformKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ProductTextFormField(
+                          readOnly: false,
+                          textController: namecontroller,
+                          label: 'Product Name'),
+                      ProductTextFormField(
+                          readOnly: false,
+                          textController: imagelink_descriptioncontroller,
+                          label: 'Description/Image Link'),
+                      ProductTextFormField(
+                          readOnly: false,
+                          textController: pricecontroller,
+                          label: 'Price'),
+                      ProductTextFormField(
+                          readOnly: false,
+                          textController: ispublishedcontroller,
+                          label: 'Is published?'),
+                      Button(
+                        label: 'Submit',
+                        onPressed: () {
+                          // if (_formKey2.currentState!.validate()) {
+                          //addprod here
+                          // if (namecontroller.text.isNotEmpty &&
+                          //     imagelink_descriptioncontroller.text.isNotEmpty &&
+                          //     pricecontroller.text.isNotEmpty) {
+                          //   AuthServices().AddProduct(
+                          //       namecontroller.text,
+                          //       imagelink_descriptioncontroller.text,
+                          //       imagelink_descriptioncontroller.text,
+                          //       pricecontroller.text,
+                          //       false);
 
-                          //when error has occured
-                          errorStyle: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        controller: imagelink_descriptioncontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'password is required!';
+                          //   Navigator.pushNamed(context, '/homescreen');
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //       content: Text('Sucessfully Added product')));
+                          // } else {
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //       content: Text('Incomplete Product details')));
+                          // }
+                          if (_productformKey.currentState!.validate()) {
+                            AuthServices(context).AddProduct(
+                                namecontroller.text,
+                                imagelink_descriptioncontroller.text,
+                                imagelink_descriptioncontroller.text,
+                                pricecontroller.text,
+                                false);
                           }
-                          return null;
                         },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter your description and imagelink',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        controller: pricecontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'e-mail address is required.';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter your price',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        // controller: ispublishedcontroller,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'password is required!';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Is published?',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          //when error has occured
-                          // errorStyle: TextStyle(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline),
-                            ),
-                            onPressed: () {
-                              // _launchURL3();
-                            })
-                      ],
-                    ),
-                    MaterialButton(
-                      onPressed: () {
-                        // if (_formKey2.currentState!.validate()) {
-                        //addprod here
-                        // if (namecontroller.text.isNotEmpty &&
-                        //     imagelink_descriptioncontroller.text.isNotEmpty &&
-                        //     pricecontroller.text.isNotEmpty) {
-                        //   AuthServices().AddProduct(
-                        //       namecontroller.text,
-                        //       imagelink_descriptioncontroller.text,
-                        //       imagelink_descriptioncontroller.text,
-                        //       pricecontroller.text,
-                        //       false);
-
-                        //   Navigator.pushNamed(context, '/homescreen');
-                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //       content: Text('Sucessfully Added product')));
-                        // } else {
-                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //       content: Text('Incomplete Product details')));
-                        // }
-                        AuthServices(context).AddProduct(
-                            namecontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            imagelink_descriptioncontroller.text,
-                            pricecontroller.text,
-                            false);
-                      },
-                      color: Colors.black.withOpacity(0.05),
-                      textColor: Colors.white,
-                      child: Text(
-                        'ADD',
-                        // style: GoogleFonts.droidSans(
-                        //     fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 )),
           )),
       onWillPop: () async {
