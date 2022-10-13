@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -44,46 +45,46 @@ class _register_screenState extends State<register_screen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> RegisterOfuser(
-        String name, email, password, password_confirmation) async {
-      var jsonResponse;
-      Map data = {
-        'name': namecontroller.text,
-        'email': regemailcontroller.text,
-        'password': regpasswordcontroller.text,
-        'password_confirmation': regconfirmpasswordcontroller.text
-      };
-      print(data);
+    // Future<void> RegisterOfuser(
+    //     String name, email, password, password_confirmation) async {
+    //   var jsonResponse;
+    //   Map data = {
+    //     'name': namecontroller.text,
+    //     'email': regemailcontroller.text,
+    //     'password': regpasswordcontroller.text,
+    //     'password_confirmation': regconfirmpasswordcontroller.text
+    //   };
+    //   print(data);
 
-      String body = json.encode(data);
-      Uri url = Uri.parse(AppConfig().api_BASEURL + "/api/register");
-      var response = await http.post(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
-      ).timeout(Duration(seconds: 10));
+    //   String body = json.encode(data);
+    //   Uri url = Uri.parse(AppConfig().api_BASEURL + "/api/register");
+    //   var response = await http.post(
+    //     url,
+    //     body: body,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*"
+    //     },
+    //   ).timeout(Duration(seconds: 10));
 
-      print(response.body);
-      print(response.statusCode);
+    //   print(response.body);
+    //   print(response.statusCode);
 
-      if (response.statusCode == 201) {
-        jsonResponse = json.decode(response.body.toString());
+    //   if (response.statusCode == 201) {
+    //     jsonResponse = json.decode(response.body.toString());
 
-        Navigator.pushNamed(context, '/');
-        // ignore: avoid_print
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Successfully registered')));
-        print('success');
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Invalid Data')));
-        print('error');
-      }
-    }
+    //     Navigator.pushNamed(context, '/');
+    //     // ignore: avoid_print
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Successfully registered')));
+    //     print('success');
+    //   } else {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Invalid Data')));
+    //     print('error');
+    //   }
+    // }
 
     return WillPopScope(
       child: Scaffold(
@@ -132,7 +133,7 @@ class _register_screenState extends State<register_screen> {
                       formKey: _regformKey,
                       onPressed: () {
                         if (_regformKey.currentState!.validate()) {
-                          RegisterOfuser(
+                          AuthServices(context).RegisterOfuser(
                               namecontroller.text,
                               regemailcontroller.text,
                               regpasswordcontroller.text,

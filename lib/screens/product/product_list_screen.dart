@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:api_app/screens/product/edit_product_screen.dart';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -26,50 +27,52 @@ class _product_list_screenState extends State<product_list_screen> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
-  int last_page = 1;
+
   final pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
   var namecontroller = TextEditingController();
   int page = 1;
+  int last_page = 1;
   void clearText() {
     imagelink_descriptioncontroller.clear();
     pricecontroller.clear();
   }
 
+  // getprods = await AuthServices(context).getAllProducts(page);
   @override
   Widget build(BuildContext context) {
     @override
-    void initState() {
+    void initState() async {
       super.initState();
     }
 
-    Future<List<Product>> getAllProducts() async {
-      // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
-      var response = await http.get(
-          Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page"),
-          headers: {
-            "Content-Type": "application/json",
-            "accept": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Authorization": 'Bearer $token'
-          });
-      var jsonData = json.decode(response.body);
-      print(jsonData['last_page']);
+    // Future<List<Product>> getAllProducts() async {
+    //   // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
+    //   var response = await http.get(
+    //       Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page"),
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         "accept": "application/json",
+    //         "Access-Control-Allow-Origin": "*",
+    //         "Authorization": 'Bearer $token'
+    //       });
+    //   var jsonData = json.decode(response.body);
+    //   print(jsonData['last_page']);
 
-      last_page = (jsonData['last_page']);
+    //   last_page = (jsonData['last_page']);
 
-      var jsonArray = jsonData['data'];
-      List<Product> products = [];
-      for (var jsonProduct in jsonArray) {
-        Product product = Product(
-            id: jsonProduct['id'],
-            user_id: jsonProduct['user_id'],
-            name: jsonProduct['name'],
-            price: jsonProduct['price']);
-        products.add(product);
-      }
-      return products;
-    }
+    //   var jsonArray = jsonData['data'];
+    //   List<Product> products = [];
+    //   for (var jsonProduct in jsonArray) {
+    //     Product product = Product(
+    //         id: jsonProduct['id'],
+    //         user_id: jsonProduct['user_id'],
+    //         name: jsonProduct['name'],
+    //         price: jsonProduct['price']);
+    //     products.add(product);
+    //   }
+    //   return products;
+    // }
 
     //HERE^
 
@@ -92,7 +95,7 @@ class _product_list_screenState extends State<product_list_screen> {
                   if (page > 0) {
                     setState(() {
                       page--;
-                      getAllProducts();
+                      AuthServices(context).getAllProducts(page);
                     });
                   } else if (page == 0) {
                     ScaffoldMessenger.of(context)
@@ -107,11 +110,13 @@ class _product_list_screenState extends State<product_list_screen> {
               IconButton(
                 icon: const Icon(Icons.arrow_right),
                 tooltip: 'Show Snackbar',
-                onPressed: () {
-                  if (page < last_page) {
+                onPressed: () async {
+                  SharedPreferences lastpage =
+                      await SharedPreferences.getInstance();
+                  if (page < lastpage.getInt('last_page')!) {
                     setState(() {
                       page++;
-                      getAllProducts();
+                      AuthServices(context).getAllProducts(page);
                     });
                   } else {
                     ScaffoldMessenger.of(context)
@@ -130,7 +135,8 @@ class _product_list_screenState extends State<product_list_screen> {
               ),
             ),
             child: FutureBuilder<List<Product>>(
-              future: getAllProducts(),
+              future: AuthServices(context)
+                  .getAllProducts(page), //dont put set state here
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
                   return Center(

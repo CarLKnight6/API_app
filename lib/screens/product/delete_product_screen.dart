@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/services/AuthServices.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -39,46 +40,46 @@ class _delete_product_screenState extends State<delete_product_screen> {
       super.initState();
     }
 
-    Future<void> delete_product_screen(String id) async {
-      var jsonResponse;
-      Map data = {
-        'id': productidcontroller.text,
-      };
-      print(data);
-      print("the first token $token");
+    // Future<void> delete_product_screen(String id) async {
+    //   var jsonResponse;
+    //   Map data = {
+    //     'id': productidcontroller.text,
+    //   };
+    //   print(data);
+    //   print("the first token $token");
 
-      String body = json.encode(data);
+    //   String body = json.encode(data);
 
-      Uri url = Uri.parse(
-          "${AppConfig().api_BASEURL}/api/products/${productidcontroller.text}");
-      var response = await http.delete(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Authorization": 'Bearer $token'
-        },
-      );
-      print("token $token");
-      print(response.body);
-      print(response.statusCode);
+    //   Uri url = Uri.parse(
+    //       "${AppConfig().api_BASEURL}/api/products/${productidcontroller.text}");
+    //   var response = await http.delete(
+    //     url,
+    //     body: body,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Authorization": 'Bearer $token'
+    //     },
+    //   );
+    //   print("token $token");
+    //   print(response.body);
+    //   print(response.statusCode);
 
-      if (response.statusCode == 200 && response.body == deleterespo) {
-        jsonResponse = json.decode(response.body.toString());
+    //   if (response.statusCode == 200 && response.body == deleterespo) {
+    //     jsonResponse = json.decode(response.body.toString());
 
-        Navigator.pushNamed(context, '/homescreen');
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Successfully deleted the product')));
+    //     Navigator.pushNamed(context, '/homescreen');
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text('Successfully deleted the product')));
 
-        print('success');
-      } else {
-        print('error');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Invalid credential')));
-      }
-    }
+    //     print('success');
+    //   } else {
+    //     print('error');
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Invalid credential')));
+    //   }
+    // }
 
     return WillPopScope(
       child: Scaffold(
@@ -170,8 +171,8 @@ class _delete_product_screenState extends State<delete_product_screen> {
                       onPressed: () {
                         // if (_formKey2.currentState!.validate()) {
                         //add delete function here
-                        delete_product_screen(productidcontroller.text);
-                        print(productidcontroller.text);
+                        AuthServices(context).delete_product_screen(
+                            int.parse(productidcontroller.text));
 
                         // delete_product_screen(
                         //     productidcontroller.text,

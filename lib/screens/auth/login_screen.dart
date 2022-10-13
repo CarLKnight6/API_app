@@ -39,50 +39,50 @@ class _login_screenState extends State<login_screen> {
       logpasswordcontroller.clear();
     }
 
-    Future<void> LoginOfuser(String email, password) async {
-      var jsonResponse;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      Map data = {
-        'email': logemailcontroller.text,
-        'password': logpasswordcontroller.text,
-      };
+    // Future<void> LoginOfuser(String email, password) async {
+    //   var jsonResponse;
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   Map data = {
+    //     'email': logemailcontroller.text,
+    //     'password': logpasswordcontroller.text,
+    //   };
 
-      String body = json.encode(data);
-      Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
-      var response = await http.post(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
-      ).timeout(Duration(seconds: 10));
+    //   String body = json.encode(data);
+    //   Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
+    //   var response = await http.post(
+    //     url,
+    //     body: body,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "accept": "application/json",
+    //       "Access-Control-Allow-Origin": "*"
+    //     },
+    //   ).timeout(Duration(seconds: 10));
 
-      print(response.body);
-      // print(response.body["token"]);
-      // prefs.setString("token", jsonResponse['response']['token']);
-      print('access token is -> ${json.decode(response.body)['token']}');
+    //   print(response.body);
+    //   // print(response.body["token"]);
+    //   // prefs.setString("token", jsonResponse['response']['token']);
+    //   print('access token is -> ${json.decode(response.body)['token']}');
 
-      print(response.statusCode);
+    //   print(response.statusCode);
 
-      if (response.statusCode == 201) {
-        jsonResponse = json.decode(response.body.toString());
-        prefs.setString("token", json.decode(response.body)['token']);
-        Navigator.pushNamed(context, '/homescreen');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Logged in success')));
+    //   if (response.statusCode == 201) {
+    //     jsonResponse = json.decode(response.body.toString());
+    //     prefs.setString("token", json.decode(response.body)['token']);
+    //     Navigator.pushNamed(context, '/homescreen');
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Logged in success')));
 
-        // ignore: avoid_print
+    //     // ignore: avoid_print
 
-        print('success ${jsonResponse['user']['name']}');
-        print('success');
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Check your credentials')));
-        print('error');
-      }
-    }
+    //     print('success ${jsonResponse['user']['name']}');
+    //     print('success');
+    //   } else {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(SnackBar(content: Text('Check your credentials')));
+    //     print('error');
+    //   }
+    // }
 
     String? validateEmail(String? formEmail) {
       if (formEmail == null || formEmail.isEmpty)
@@ -205,7 +205,8 @@ class _login_screenState extends State<login_screen> {
                       formKey: _loginformKey,
                       onPressed: () async {
                         if (_loginformKey.currentState!.validate()) {
-                          LoginOfuser(logemailcontroller.text,
+                          AuthServices(context).LoginOfuser(
+                              logemailcontroller.text,
                               logpasswordcontroller.text);
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Sucessfully Logged in')));
