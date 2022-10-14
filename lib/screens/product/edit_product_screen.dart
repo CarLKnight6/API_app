@@ -1,20 +1,8 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
-
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
 import 'package:api_app/Repositories/product_repositories.dart';
-import 'package:api_app/model/models.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
-import 'package:api_app/screens/home_screen.dart';
-
-import '../../AppConfig/Appconfig.dart';
 
 class EditProductScreen extends StatefulWidget {
   // edit_product_screen({Key? key, String? token}) : super(key: key);

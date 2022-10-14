@@ -21,13 +21,10 @@ class HomeScreen extends StatefulWidget {
 String? token;
 
 class _HomeScreenState extends State<HomeScreen> {
-  // String token = "";
-
   @override
   void initState() {
     super.initState();
-    // checkKey();
-    // deletetokenValue();
+
     getCred();
   }
 
@@ -69,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
       deletetokenValue();
       Navigator.pushNamed(context, '/loginscreen');
 
-      // ignore: avoid_print
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Account logged out')));
       print('success');
@@ -85,11 +81,9 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: AppBar(
             title: Text('Home Page'),
             backgroundColor: Colors.transparent,
-            //automaticallyImplyLeading: false,
           ),
           drawer: Drawer(
             child: ListView(
-              // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
@@ -102,9 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text('Sign Out'),
                   onTap: () {
                     LogoutOfuser();
-
-                    // Update the state of the app.
-                    // ...
                   },
                 ),
                 ListTile(
@@ -140,25 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TextFieldWidget(
                         label: 'Welcome User $token',
                       ),
-                      // TextFormField(
-                      //   readOnly: true,
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //   ),
-                      //   enableInteractiveSelection: false,
-                      //   decoration: InputDecoration(
-                      //     labelText: 'WELCOME USER $token',
-                      //     prefixIcon: Icon(Icons.person),
-                      //     labelStyle: TextStyle(
-                      //       color: Colors.white,
-                      //     ),
-
-                      //     //when error has occured
-                      //     errorStyle: TextStyle(
-                      //       color: Colors.red,
-                      //     ),
-                      //   ),
-                      // ),
                     ),
                   ),
                   Button(
@@ -175,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: 'Add Product',
                     onPressed: () {
                       print(token);
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         add_product_screen(token: token)));
+
                       Navigator.pushNamed(context, '/addproduct');
                     },
                   ),

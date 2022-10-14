@@ -1,19 +1,8 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
-
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:api_app/Repositories/product_repositories.dart';
 import 'package:api_app/screens/product/edit_product_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
-import 'package:api_app/screens/home_screen.dart';
-
-import '../../AppConfig/Appconfig.dart';
 import '../../model/models.dart';
 
 class ProductListScreen extends StatefulWidget {
