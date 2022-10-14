@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:developer';
-
 import 'package:api_app/screens/main_screen.dart';
 import 'package:api_app/screens/product/add_product_screen.dart';
 import 'package:api_app/screens/product/delete_product_screen.dart';
@@ -11,7 +7,8 @@ import 'package:api_app/screens/product/product_list_screen.dart';
 import 'package:api_app/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -27,13 +24,13 @@ class MyApp extends StatelessWidget {
       title: "api app",
       initialRoute: '/',
       routes: {
-        '/': (context) => main_screen(),
-        '/loginscreen': (context) => login_screen(),
-        '/homescreen': (context) => home_screen(),
-        '/register': (context) => register_screen(),
-        '/deleteproduct': (context) => delete_product_screen(),
-        '/productlist': (context) => product_list_screen(),
-        '/addproduct': (context) => add_product_screen()
+        '/': (context) => const MainScreen(),
+        '/loginscreen': (context) => const LoginScreen(),
+        '/homescreen': (context) => HomeScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/deleteproduct': (context) => DeleteProductScreen(),
+        '/productlist': (context) => ProductListScreen(),
+        '/addproduct': (context) => AddProductScreen()
       },
     );
   }

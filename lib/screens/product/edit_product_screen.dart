@@ -3,8 +3,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/Repositories/product_repositories.dart';
 import 'package:api_app/model/models.dart';
-import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +16,7 @@ import 'package:api_app/screens/home_screen.dart';
 
 import '../../AppConfig/Appconfig.dart';
 
-class edit_product_screen extends StatefulWidget {
+class EditProductScreen extends StatefulWidget {
   // edit_product_screen({Key? key, String? token}) : super(key: key);
 
   int product_id;
@@ -24,14 +24,14 @@ class edit_product_screen extends StatefulWidget {
   String product_price;
   int product_userid;
 
-  edit_product_screen(this.product_id, this.product_name, this.product_price,
+  EditProductScreen(this.product_id, this.product_name, this.product_price,
       this.product_userid);
 
   @override
-  _edit_product_screenState createState() => _edit_product_screenState();
+  _EditProductScreenState createState() => _EditProductScreenState();
 }
 
-class _edit_product_screenState extends State<edit_product_screen> {
+class _EditProductScreenState extends State<EditProductScreen> {
   late int captured_product_id;
   late String captured_product_name;
   late String captured_product_price;
@@ -83,52 +83,6 @@ class _edit_product_screenState extends State<edit_product_screen> {
 
       _debounce = 0 as Timer;
     }
-
-    // Future<void> edit_product_screen(String name, String image_link,
-    //     String description, String price, bool is_published) async {
-    //   var jsonResponse;
-    //   Map data = {
-    //     'name': productnamecontroller.text,
-    //     'image_link': imagelink_descriptioncontroller.text,
-    //     'description': imagelink_descriptioncontroller.text,
-    //     'price': pricecontroller.text,
-    //     'is_published': false
-    //   };
-    //   print(data);
-    //   print("the first token $token");
-
-    //   String body = json.encode(data);
-    //   // Uri url = Uri.parse(
-    //   //     "${AppConfig().api_BASEURL}/api/products/$captured_product_id");
-    //   var response = await http.put(
-    //     Uri.parse(
-    //         "${AppConfig().api_BASEURL}/api/products/$captured_product_id"),
-    //     body: body,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Authorization": 'Bearer $token'
-    //     },
-    //   );
-    //   print("token $token");
-    //   print(response.body);
-    //   print(response.statusCode);
-
-    //   if (response.statusCode == 200) {
-    //     jsonResponse = json.decode(response.body.toString());
-    //     Navigator.pushNamed(context, '/productlist');
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('Successfully updated the product')));
-    //     // ignore: avoid_print
-    //     print('success');
-    //   } else {
-    //     print('error');
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('Incomplete Product details')));
-    //     print('error');
-    //   }
-    // }
 
     return WillPopScope(
       child: Scaffold(
@@ -188,7 +142,7 @@ class _edit_product_screenState extends State<edit_product_screen> {
 
                           // fetchProducts();
                           _search();
-                          AuthServices(context).edit_product_screen(
+                          ProductRepositories(context).edit_product_screen(
                               captured_product_id,
                               captured_product_userid,
                               productnamecontroller.text,

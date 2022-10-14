@@ -2,19 +2,19 @@ import 'dart:ffi';
 
 class Product {
   int id;
-  int user_id;
+  int userid;
   String name;
   String price;
-  int? current_page;
-  int? last_page;
+  int? currentpage;
+  int? lastpage;
 
   Product(
       {required this.id,
-      required this.user_id,
+      required this.userid,
       required this.name,
       required this.price,
-      this.current_page,
-      this.last_page});
+      this.currentpage,
+      this.lastpage});
 }
 
 class Logindetails {
@@ -28,28 +28,28 @@ class Registerdetails {
   String name;
   String email;
   String password;
-  String password_confirmation;
+  String passwordconfirmation;
 
   Registerdetails(
       {required this.name,
       required this.email,
       required this.password,
-      required this.password_confirmation});
+      required this.passwordconfirmation});
 }
 
 class Productdetails {
   String name;
-  String? image_link;
+  String? imagelink;
   String? description;
   String price;
-  Bool is_published;
+  Bool ispublished;
 
   Productdetails(
       {required this.name,
-      this.image_link,
+      this.imagelink,
       this.description,
       required this.price,
-      required this.is_published});
+      required this.ispublished});
 }
 
 class ProductID {
@@ -61,19 +61,19 @@ class ProductID {
 
 class UpdateProduct {
   int id;
-  int user_id;
+  int userid;
   String name;
-  String? image_link;
+  String? imagelink;
   String? description;
   String price;
-  Bool? is_published;
+  Bool? ispublished;
 
   UpdateProduct(
       {required this.id,
-      required this.user_id,
+      required this.userid,
       required this.name,
-      this.image_link,
+      this.imagelink,
       this.description,
       required this.price,
-      this.is_published});
+      this.ispublished});
 }

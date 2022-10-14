@@ -1,99 +1,15 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
-import 'package:api_app/model/models.dart';
+
+import 'package:api_app/AppConfig/Appconfig.dart';
 import 'package:api_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:api_app/screens/product/add_product_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../AppConfig/Appconfig.dart';
+import 'package:http/http.dart' as http;
+import '../model/models.dart';
 
-late String body;
-
-class AuthServices {
-  AuthServices(this.context);
+class ProductRepositories {
+  ProductRepositories(this.context);
   BuildContext context;
-
-  Future<List<Logindetails>?> LoginOfuser(String email, password) async {
-    var jsonResponse;
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    Map data = {
-      'email': email,
-      'password': password,
-    };
-
-    String body = json.encode(data);
-    Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/login");
-    var response = await http.post(
-      url,
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-    ).timeout(Duration(seconds: 10));
-
-    print(response.body);
-    print('access token is -> ${json.decode(response.body)['token']}');
-
-    if (response.statusCode == 201) {
-      prefs.setString("token", json.decode(response.body)['token']);
-      token = prefs.getString('token')!;
-      // ignore: avoid_print
-      Navigator.pushNamed(context, '/homescreen');
-      print('Response -> ${json.decode(response.body)}');
-      print('success');
-    } else {
-      print('error');
-    }
-  }
-
-  Future<List<Registerdetails>?> RegisterOfuser(
-      String name, email, password, password_confirmation) async {
-    var jsonResponse;
-    Map data = {
-      'name': name,
-      'email': email,
-      'password': password,
-      'password_confirmation': password_confirmation
-    };
-    print(data);
-
-    String body = json.encode(data);
-    Uri url = Uri.parse(AppConfig().api_BASEURL + "/api/register");
-    var response = await http.post(
-      url,
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-    ).timeout(Duration(seconds: 10));
-
-    print(response.body);
-    print(response.statusCode);
-
-    if (response.statusCode == 201) {
-      jsonResponse = json.decode(response.body.toString());
-
-      Navigator.pushNamed(context, '/loginscreen');
-
-      // ignore: avoid_print
-      ScaffoldMessenger.of(context)
-          // ignore: prefer_const_constructors
-          .showSnackBar(SnackBar(content: Text('Successfully registered')));
-      print('success');
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Invalid Data')));
-      print('error');
-    }
-  }
 
   Future<List<Productdetails>?> AddProduct(String name, String image_link,
       String description, String price, bool is_published) async {
@@ -109,7 +25,7 @@ class AuthServices {
     print("the first token $token");
 
     String body = json.encode(data);
-    Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products");
+    Uri url = Uri.parse("${AppConfig().apibaseurl}/api/products");
     var response = await http.post(
       url,
       body: body,
@@ -127,7 +43,6 @@ class AuthServices {
     if (response.statusCode == 201) {
       jsonResponse = json.decode(response.body.toString());
       Navigator.pushNamed(context, '/homescreen');
-
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Successfully added the product')));
       // ignore: avoid_print
@@ -150,7 +65,7 @@ class AuthServices {
     String body = json.encode(data);
 
     Uri url =
-        Uri.parse("${AppConfig().api_BASEURL}/api/products/${id.toString()}");
+        Uri.parse("${AppConfig().apibaseurl}/api/products/${id.toString()}");
     var response = await http.delete(
       url,
       body: body,
@@ -205,7 +120,7 @@ class AuthServices {
     // Uri url = Uri.parse(
     //     "${AppConfig().api_BASEURL}/api/products/$captured_product_id");
     var response = await http.put(
-      Uri.parse("${AppConfig().api_BASEURL}/api/products/${id}"),
+      Uri.parse("${AppConfig().apibaseurl}/api/products/${id}"),
       body: body,
       headers: {
         "Content-Type": "application/json",
@@ -222,13 +137,12 @@ class AuthServices {
       jsonResponse = json.decode(response.body.toString());
       Navigator.pushNamed(context, '/productlist');
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Successfully updated the product')));
-      // ignore: avoid_print
+          const SnackBar(content: Text('Successfully updated the product')));
+
       print('success');
     } else {
-      print('error');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Incomplete Product details')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Incomplete Product details')));
       print('error');
     }
   }
@@ -238,7 +152,7 @@ class AuthServices {
     print('this is page inside funct ${page}');
 
     var response = await http.get(
-        Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page"),
+        Uri.parse("${AppConfig().apibaseurl}/api/products?page=$page"),
         headers: {
           "Content-Type": "application/json",
           "accept": "application/json",
@@ -258,7 +172,7 @@ class AuthServices {
     for (var jsonProduct in jsonArray) {
       Product product = Product(
           id: jsonProduct['id'],
-          user_id: jsonProduct['user_id'],
+          userid: jsonProduct['user_id'],
           name: jsonProduct['name'],
           price: jsonProduct['price']);
       products.add(product);

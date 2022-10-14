@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'dart:ffi';
-import 'package:api_app/services/AuthServices.dart';
+import 'package:api_app/Repositories/auth_repositories.dart';
+import 'package:api_app/Repositories/product_repositories.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:http/http.dart' as http;
@@ -14,14 +15,14 @@ import 'package:api_app/screens/home_screen.dart';
 
 import '../../AppConfig/Appconfig.dart';
 
-class delete_product_screen extends StatefulWidget {
-  delete_product_screen({Key? key, String? token}) : super(key: key);
+class DeleteProductScreen extends StatefulWidget {
+  DeleteProductScreen({Key? key, String? token}) : super(key: key);
 
   @override
-  _delete_product_screenState createState() => _delete_product_screenState();
+  _DeleteProductScreenState createState() => _DeleteProductScreenState();
 }
 
-class _delete_product_screenState extends State<delete_product_screen> {
+class _DeleteProductScreenState extends State<DeleteProductScreen> {
   final _formKey2 = GlobalKey<FormState>();
   final _deleteformKey = GlobalKey<FormState>();
   String deleterespo = '1';
@@ -129,7 +130,7 @@ class _delete_product_screenState extends State<delete_product_screen> {
                       onPressed: () {
                         if (_deleteformKey.currentState!.validate()) {
                           //add delete function here
-                          AuthServices(context).delete_product_screen(
+                          ProductRepositories(context).delete_product_screen(
                               int.parse(productidcontroller.text));
                         }
                       },

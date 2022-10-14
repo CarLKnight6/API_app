@@ -34,6 +34,7 @@ dependencies:
   http: ^0.13.5
   shared_preferences: ^2.0.15
   google_fonts: ^3.0.1
+  email_validator: ^2.1.17
   
 
   # The following adds the Cupertino Icons font to your application.

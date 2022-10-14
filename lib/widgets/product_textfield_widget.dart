@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 class ProductTextFormField extends StatefulWidget {
@@ -38,24 +36,25 @@ class _ProductTextFormFieldState extends State<ProductTextFormField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       child: TextFormField(
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           obscureText: widget.isObscure,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
           decoration: InputDecoration(
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: const TextStyle(color: Colors.grey),
               hintText: widget.hintText,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               labelText: widget.label,
-              labelStyle: TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
-              errorStyle: TextStyle(
+              labelStyle:
+                  const TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
+              errorStyle: const TextStyle(
                 color: Colors.red,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffixIcon,
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                   borderSide:
                       BorderSide(color: Color.fromARGB(255, 229, 236, 222)))),
           controller: widget.textController,

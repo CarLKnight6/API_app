@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:api_app/Repositories/product_repositories.dart';
 import 'package:api_app/model/models.dart';
-import 'package:api_app/services/AuthServices.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:http/http.dart' as http;
@@ -15,14 +15,14 @@ import 'package:api_app/screens/home_screen.dart';
 
 import '../../AppConfig/Appconfig.dart';
 
-class add_product_screen extends StatefulWidget {
-  add_product_screen({Key? key, String? token}) : super(key: key);
+class AddProductScreen extends StatefulWidget {
+  AddProductScreen({Key? key, String? token}) : super(key: key);
 
   @override
-  _add_product_screenState createState() => _add_product_screenState();
+  _AddProductScreenState createState() => _AddProductScreenState();
 }
 
-class _add_product_screenState extends State<add_product_screen> {
+class _AddProductScreenState extends State<AddProductScreen> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
@@ -122,7 +122,7 @@ class _add_product_screenState extends State<add_product_screen> {
                           //       content: Text('Incomplete Product details')));
                           // }
                           if (_productformKey.currentState!.validate()) {
-                            AuthServices(context).AddProduct(
+                            ProductRepositories(context).AddProduct(
                                 namecontroller.text,
                                 imagelink_descriptioncontroller.text,
                                 imagelink_descriptioncontroller.text,

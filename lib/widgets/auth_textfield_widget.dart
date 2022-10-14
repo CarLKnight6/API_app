@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class AuthTextFormField extends StatefulWidget {
   const AuthTextFormField(
@@ -9,7 +8,9 @@ class AuthTextFormField extends StatefulWidget {
       required this.label,
       this.isObscure = false,
       this.isConfirmPassword = false,
+      this.isEmail = false,
       this.passwordController,
+      this.emailController,
       this.prefixIcon,
       this.suffixIcon})
       : super(key: key);
@@ -21,6 +22,8 @@ class AuthTextFormField extends StatefulWidget {
   final TextEditingController? passwordController;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final TextEditingController? emailController;
+  final bool isEmail;
 
   @override
   State<AuthTextFormField> createState() => _AuthTextFormFieldState();
@@ -30,19 +33,20 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       child: TextFormField(
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           obscureText: widget.isObscure,
           decoration: InputDecoration(
               labelText: widget.label,
-              labelStyle: TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
-              errorStyle: TextStyle(
+              labelStyle:
+                  const TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
+              errorStyle: const TextStyle(
                 color: Colors.red,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffixIcon,
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                   borderSide:
                       BorderSide(color: Color.fromARGB(255, 229, 236, 222)))),
           controller: widget.textController,
@@ -54,7 +58,13 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
                 value != widget.passwordController?.text.toString()) {
               return 'Password does not match';
             }
-            // to do email format validation
+
+            if (widget.isEmail &&
+                value != widget.emailController &&
+                EmailValidator.validate(value) == false) {
+              return 'Invalid Email';
+            }
+
             return null;
           }),
     );

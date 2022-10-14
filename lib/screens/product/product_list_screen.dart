@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:api_app/Repositories/product_repositories.dart';
 import 'package:api_app/screens/product/edit_product_screen.dart';
-import 'package:api_app/services/AuthServices.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -16,14 +16,14 @@ import 'package:api_app/screens/home_screen.dart';
 import '../../AppConfig/Appconfig.dart';
 import '../../model/models.dart';
 
-class product_list_screen extends StatefulWidget {
-  product_list_screen({Key? key, String? token}) : super(key: key);
+class ProductListScreen extends StatefulWidget {
+  ProductListScreen({Key? key, String? token}) : super(key: key);
 
   @override
-  _product_list_screenState createState() => _product_list_screenState();
+  _ProductListScreenState createState() => _ProductListScreenState();
 }
 
-class _product_list_screenState extends State<product_list_screen> {
+class _ProductListScreenState extends State<ProductListScreen> {
   final _formKey2 = GlobalKey<FormState>();
 
   final imagelink_descriptioncontroller = TextEditingController();
@@ -47,43 +47,12 @@ class _product_list_screenState extends State<product_list_screen> {
     super.dispose();
   }
 
-  // getprods = await AuthServices(context).getAllProducts(page);
   @override
   Widget build(BuildContext context) {
     @override
     void initState() async {
       super.initState();
     }
-
-    // Future<List<Product>> getAllProducts() async {
-    //   // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
-    //   var response = await http.get(
-    //       Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page"),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "accept": "application/json",
-    //         "Access-Control-Allow-Origin": "*",
-    //         "Authorization": 'Bearer $token'
-    //       });
-    //   var jsonData = json.decode(response.body);
-    //   print(jsonData['last_page']);
-
-    //   last_page = (jsonData['last_page']);
-
-    //   var jsonArray = jsonData['data'];
-    //   List<Product> products = [];
-    //   for (var jsonProduct in jsonArray) {
-    //     Product product = Product(
-    //         id: jsonProduct['id'],
-    //         user_id: jsonProduct['user_id'],
-    //         name: jsonProduct['name'],
-    //         price: jsonProduct['price']);
-    //     products.add(product);
-    //   }
-    //   return products;
-    // }
-
-    //HERE^
 
     return WillPopScope(
       child: Scaffold(
@@ -104,7 +73,7 @@ class _product_list_screenState extends State<product_list_screen> {
                   if (page > 0) {
                     setState(() {
                       page--;
-                      AuthServices(context).getAllProducts(page);
+                      ProductRepositories(context).getAllProducts(page);
                     });
                   } else if (page == 0) {
                     ScaffoldMessenger.of(context)
@@ -125,7 +94,7 @@ class _product_list_screenState extends State<product_list_screen> {
                   if (page < lastpage.getInt('last_page')!) {
                     setState(() {
                       page++;
-                      AuthServices(context).getAllProducts(page);
+                      ProductRepositories(context).getAllProducts(page);
                     });
                   } else {
                     ScaffoldMessenger.of(context)
@@ -144,8 +113,7 @@ class _product_list_screenState extends State<product_list_screen> {
               ),
             ),
             child: FutureBuilder<List<Product>>(
-              future: AuthServices(context)
-                  .getAllProducts(page), //dont put set state here
+              future: ProductRepositories(context).getAllProducts(page),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
                   return Center(
@@ -164,11 +132,11 @@ class _product_list_screenState extends State<product_list_screen> {
                             var product_id = product.id;
                             var product_name = product.name;
                             var product_price = product.price;
-                            var product_userid = product.user_id;
+                            var product_userid = product.userid;
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(
-                                builder: (context) => edit_product_screen(
+                                builder: (context) => EditProductScreen(
                                     product_id,
                                     product_name,
                                     product_price,

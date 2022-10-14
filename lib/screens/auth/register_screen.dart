@@ -1,26 +1,16 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-import 'package:api_app/services/AuthServices.dart';
-import 'package:api_app/widgets/button.dart';
+import 'package:api_app/Repositories/auth_repositories.dart';
 import 'package:api_app/widgets/submit_button.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:ui';
-
-import 'dart:math';
-
-import '../../AppConfig/Appconfig.dart';
 import '../../widgets/auth_textfield_widget.dart';
 
-class register_screen extends StatefulWidget {
-  const register_screen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _register_screenState createState() => _register_screenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _register_screenState extends State<register_screen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
@@ -32,10 +22,11 @@ class _register_screenState extends State<register_screen> {
 
   final regpasswordcontroller = TextEditingController();
   final regconfirmpasswordcontroller = TextEditingController();
-  bool onPressedValue = true;
+
   var namecontroller = TextEditingController();
   var donetext = 'done';
-  bool _isProcessing = false;
+  bool _isProcessing = true;
+
   @override
   void dispose() {
     namecontroller.dispose();
@@ -54,47 +45,6 @@ class _register_screenState extends State<register_screen> {
 
   @override
   Widget build(BuildContext context) {
-    // Future<void> RegisterOfuser(
-    //     String name, email, password, password_confirmation) async {
-    //   var jsonResponse;
-    //   Map data = {
-    //     'name': namecontroller.text,
-    //     'email': regemailcontroller.text,
-    //     'password': regpasswordcontroller.text,
-    //     'password_confirmation': regconfirmpasswordcontroller.text
-    //   };
-    //   print(data);
-
-    //   String body = json.encode(data);
-    //   Uri url = Uri.parse(AppConfig().api_BASEURL + "/api/register");
-    //   var response = await http.post(
-    //     url,
-    //     body: body,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*"
-    //     },
-    //   ).timeout(Duration(seconds: 10));
-
-    //   print(response.body);
-    //   print(response.statusCode);
-
-    //   if (response.statusCode == 201) {
-    //     jsonResponse = json.decode(response.body.toString());
-
-    //     Navigator.pushNamed(context, '/');
-    //     // ignore: avoid_print
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Successfully registered')));
-    //     print('success');
-    //   } else {
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Invalid Data')));
-    //     print('error');
-    //   }
-    // }
-
     return WillPopScope(
       child: Scaffold(
           extendBodyBehindAppBar: true,
@@ -103,15 +53,15 @@ class _register_screenState extends State<register_screen> {
               onPressed: () {
                 Navigator.pushNamed(context, '/loginscreen');
               },
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
-            title: Text('Create Account'),
+            title: const Text('Create Account'),
             backgroundColor: Colors.transparent,
           ),
           body: Form(
             key: _regformKey,
             child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/bg1.jpg"),
                     fit: BoxFit.cover,
@@ -126,24 +76,37 @@ class _register_screenState extends State<register_screen> {
                       label: 'Name',
                     ),
                     AuthTextFormField(
+                      isEmail: true,
                       textController: regemailcontroller,
+                      emailController: regemailcontroller,
                       label: 'Email',
                     ),
                     AuthTextFormField(
+                      isObscure: true,
                       textController: regpasswordcontroller,
                       label: 'Password',
                     ),
                     AuthTextFormField(
+                      isObscure: true,
                       textController: regconfirmpasswordcontroller,
                       label: 'Confirm Password',
+                      isConfirmPassword: true,
+                      passwordController: regpasswordcontroller,
                     ),
                     SubmitButton(
                         label: 'Submit',
                         formKey: _regformKey,
-                        isProcessing: _isProcessing,
-                        validated: () {
+                        visible: _isProcessing,
+                        onPressed: () {
                           if (_regformKey.currentState!.validate()) {
-                            AuthServices(context).RegisterOfuser(
+                            Future.delayed(const Duration(seconds: 5))
+                                .then((value) {
+                              setState(() {
+                                _isProcessing = false;
+                              });
+                            });
+
+                            AuthRepositories(context).RegisterOfuser(
                                 namecontroller.text,
                                 regemailcontroller.text,
                                 regpasswordcontroller.text,

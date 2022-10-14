@@ -2,9 +2,8 @@
 
 import 'dart:io';
 import 'package:api_app/AppConfig/Appconfig.dart';
-import 'package:api_app/services/AuthServices.dart';
-import 'package:api_app/screens/product/add_product_screen.dart';
 import 'package:api_app/screens/product/product_list_screen.dart';
+import 'package:api_app/widgets/textfield_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,14 +11,16 @@ import 'dart:convert';
 import '../widgets/button.dart';
 
 // ignore: must_be_immutable
-class home_screen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _home_screenState createState() => _home_screenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 String? token;
 
-class _home_screenState extends State<home_screen> {
+class _HomeScreenState extends State<HomeScreen> {
   // String token = "";
 
   @override
@@ -48,7 +49,7 @@ class _home_screenState extends State<home_screen> {
   Future<void> LogoutOfuser() async {
     var jsonResponse;
 
-    Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/logout");
+    Uri url = Uri.parse("${AppConfig().apibaseurl}/api/logout");
     var response = await http.post(
       url,
       headers: {
@@ -136,25 +137,28 @@ class _home_screenState extends State<home_screen> {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: Container(
                       width: double.infinity,
-                      child: TextFormField(
-                        readOnly: true,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        enableInteractiveSelection: false,
-                        decoration: InputDecoration(
-                          labelText: 'WELCOME USER $token',
-                          prefixIcon: Icon(Icons.person),
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-
-                          //when error has occured
-                          errorStyle: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
+                      child: TextFieldWidget(
+                        label: 'Welcome User $token',
                       ),
+                      // TextFormField(
+                      //   readOnly: true,
+                      //   style: TextStyle(
+                      //     color: Colors.white,
+                      //   ),
+                      //   enableInteractiveSelection: false,
+                      //   decoration: InputDecoration(
+                      //     labelText: 'WELCOME USER $token',
+                      //     prefixIcon: Icon(Icons.person),
+                      //     labelStyle: TextStyle(
+                      //       color: Colors.white,
+                      //     ),
+
+                      //     //when error has occured
+                      //     errorStyle: TextStyle(
+                      //       color: Colors.red,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                   ),
                   Button(
@@ -163,7 +167,7 @@ class _home_screenState extends State<home_screen> {
                       print(token);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
-                              product_list_screen(token: token)));
+                              ProductListScreen(token: token)));
                       Navigator.pushNamed(context, '/productlist');
                     },
                   ),
