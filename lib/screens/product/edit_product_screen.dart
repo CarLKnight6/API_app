@@ -11,9 +11,9 @@ class EditProductScreen extends StatefulWidget {
   String product_name;
   String product_price;
   int product_userid;
-
+  String product_imagelink;
   EditProductScreen(this.product_id, this.product_name, this.product_price,
-      this.product_userid);
+      this.product_userid, this.product_imagelink);
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -24,22 +24,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late String captured_product_name;
   late String captured_product_price;
   late int captured_product_userid;
+  late String capture_product_imagelink;
 
   final _formKey2 = GlobalKey<FormState>();
 
-  final imagelink_descriptioncontroller = TextEditingController();
+  final descriptioncontroller = TextEditingController();
 
   var pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
   var productidcontroller = TextEditingController();
   var productnamecontroller = TextEditingController();
+  var productimagelinkcontroller = TextEditingController();
   TextEditingController _controller = TextEditingController();
   final _editproductformKey = GlobalKey<FormState>();
   late StreamController _streamController;
   late Stream _stream;
   late Timer _debounce;
   void clearText() {
-    imagelink_descriptioncontroller.clear();
+    descriptioncontroller.clear();
     pricecontroller.clear();
   }
 
@@ -51,6 +53,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     captured_product_name = widget.product_name;
     captured_product_price = widget.product_price;
     captured_product_userid = widget.product_userid;
+    capture_product_imagelink = widget.product_imagelink;
     productidcontroller.text = captured_product_id.toString();
     _search() async {
       //search function here
@@ -60,7 +63,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     @override
     void dispose() {
       productnamecontroller.dispose();
-      imagelink_descriptioncontroller.dispose();
+      descriptioncontroller.dispose();
       pricecontroller.dispose();
       super.dispose();
     }
@@ -89,7 +92,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             alignment: Alignment.topCenter,
             widthFactor: 1,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/bg1.jpg"),
                   fit: BoxFit.cover,
@@ -120,8 +123,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ProductTextFormField(
                         readOnly: false,
                         hintText: captured_product_name,
-                        textController: imagelink_descriptioncontroller,
-                        label: 'Description/Image Link'),
+                        textController: descriptioncontroller,
+                        label: 'Description'),
+                    ProductTextFormField(
+                        readOnly: false,
+                        hintText: capture_product_imagelink,
+                        textController: productimagelinkcontroller,
+                        label: 'Image Link'),
                     Button(
                       label: 'Update',
                       onPressed: () {
@@ -134,8 +142,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               captured_product_id,
                               captured_product_userid,
                               productnamecontroller.text,
-                              imagelink_descriptioncontroller.text,
-                              imagelink_descriptioncontroller.text,
+                              productimagelinkcontroller.text,
+                              descriptioncontroller.text,
                               pricecontroller.text,
                               false);
                         }

@@ -17,20 +17,21 @@ class AddProductScreen extends StatefulWidget {
 class _AddProductScreenState extends State<AddProductScreen> {
   final _formKey2 = GlobalKey<FormState>();
 
-  final imagelink_descriptioncontroller = TextEditingController();
+  final descriptioncontroller = TextEditingController();
 
   final pricecontroller = TextEditingController();
+  final imagelinkcontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
   var namecontroller = TextEditingController();
   final _productformKey = GlobalKey<FormState>();
   void clearText() {
-    imagelink_descriptioncontroller.clear();
+    descriptioncontroller.clear();
     pricecontroller.clear();
   }
 
   @override
   void dispose() {
-    imagelink_descriptioncontroller.dispose();
+    descriptioncontroller.dispose();
     ispublishedcontroller.dispose();
     pricecontroller.dispose();
     namecontroller.dispose();
@@ -81,12 +82,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           label: 'Product Name'),
                       ProductTextFormField(
                           readOnly: false,
-                          textController: imagelink_descriptioncontroller,
-                          label: 'Description/Image Link'),
+                          textController: descriptioncontroller,
+                          label: 'Description'),
                       ProductTextFormField(
                           readOnly: false,
                           textController: pricecontroller,
                           label: 'Price'),
+                      ProductTextFormField(
+                          readOnly: false,
+                          textController: imagelinkcontroller,
+                          label: 'Image Link'),
                       ProductTextFormField(
                           readOnly: false,
                           textController: ispublishedcontroller,
@@ -94,30 +99,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Button(
                         label: 'Submit',
                         onPressed: () {
-                          // if (_formKey2.currentState!.validate()) {
-                          //addprod here
-                          // if (namecontroller.text.isNotEmpty &&
-                          //     imagelink_descriptioncontroller.text.isNotEmpty &&
-                          //     pricecontroller.text.isNotEmpty) {
-                          //   AuthServices().AddProduct(
-                          //       namecontroller.text,
-                          //       imagelink_descriptioncontroller.text,
-                          //       imagelink_descriptioncontroller.text,
-                          //       pricecontroller.text,
-                          //       false);
-
-                          //   Navigator.pushNamed(context, '/homescreen');
-                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //       content: Text('Sucessfully Added product')));
-                          // } else {
-                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //       content: Text('Incomplete Product details')));
-                          // }
                           if (_productformKey.currentState!.validate()) {
                             ProductRepositories(context).AddProduct(
                                 namecontroller.text,
-                                imagelink_descriptioncontroller.text,
-                                imagelink_descriptioncontroller.text,
+                                imagelinkcontroller.text,
+                                descriptioncontroller.text,
                                 pricecontroller.text,
                                 false);
                           }

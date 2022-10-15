@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SubmitButton extends StatefulWidget {
-  const SubmitButton(
-      {Key? key,
-      required this.label,
-      required this.formKey,
-      this.isProcessing = true,
-      required this.onPressed,
-      this.visible = true})
-      : super(key: key);
+  const SubmitButton({
+    Key? key,
+    required this.label,
+    required this.formKey,
+    required this.isProcessing,
+    required this.onPressed,
+    this.visible = true,
+  }) : super(key: key);
 
   final String label;
   final GlobalKey<FormState> formKey;
-  final bool? isProcessing;
+  final bool isProcessing;
   final VoidCallback onPressed;
   final bool? visible;
 
@@ -30,7 +30,7 @@ class _SubmitButtonState extends State<SubmitButton> {
         visible: widget.visible!,
         child: MaterialButton(
           color: Colors.black.withOpacity(0.05),
-          onPressed: widget.onPressed,
+          onPressed: widget.isProcessing ? null : widget.onPressed,
           child: Text(
             widget.label,
             style: GoogleFonts.openSans(

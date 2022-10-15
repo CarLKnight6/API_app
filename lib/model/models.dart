@@ -5,12 +5,14 @@ class Product {
   int userid;
   String name;
   String price;
+  String imagelink;
   int? currentpage;
   int? lastpage;
 
   Product(
       {required this.id,
       required this.userid,
+      required this.imagelink,
       required this.name,
       required this.price,
       this.currentpage,

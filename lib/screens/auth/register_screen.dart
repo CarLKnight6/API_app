@@ -1,4 +1,4 @@
-import 'package:api_app/Repositories/auth_repositories.dart';
+import 'package:api_app/Repositories/auth_repository.dart';
 import 'package:api_app/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/auth_textfield_widget.dart';
@@ -25,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   var namecontroller = TextEditingController();
   var donetext = 'done';
-  bool _isProcessing = true;
+  bool _isProcessing = false;
 
   @override
   void dispose() {
@@ -96,21 +96,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SubmitButton(
                         label: 'Submit',
                         formKey: _regformKey,
-                        visible: _isProcessing,
+                        isProcessing: _isProcessing,
                         onPressed: () {
                           if (_regformKey.currentState!.validate()) {
-                            Future.delayed(const Duration(seconds: 5))
+                            print('user is now registered');
+                            // AuthRepositories(context).RegisterOfuser(
+                            //     namecontroller.text,
+                            //     regemailcontroller.text,
+                            //     regpasswordcontroller.text,
+                            //     regconfirmpasswordcontroller.text);
+                            Future.delayed(const Duration(seconds: 3))
                                 .then((value) {
                               setState(() {
-                                _isProcessing = false;
+                                _isProcessing = true;
                               });
                             });
-
-                            AuthRepositories(context).RegisterOfuser(
-                                namecontroller.text,
-                                regemailcontroller.text,
-                                regpasswordcontroller.text,
-                                regconfirmpasswordcontroller.text);
                           }
                         })
                   ],

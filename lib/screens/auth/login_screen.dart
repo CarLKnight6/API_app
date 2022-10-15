@@ -1,4 +1,4 @@
-import 'package:api_app/Repositories/auth_repositories.dart';
+import 'package:api_app/Repositories/auth_repository.dart';
 import 'package:api_app/widgets/auth_textfield_widget.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:flutter/material.dart';

@@ -39,47 +39,6 @@ class _DeleteProductScreenState extends State<DeleteProductScreen> {
       super.initState();
     }
 
-    // Future<void> delete_product_screen(String id) async {
-    //   var jsonResponse;
-    //   Map data = {
-    //     'id': productidcontroller.text,
-    //   };
-    //   print(data);
-    //   print("the first token $token");
-
-    //   String body = json.encode(data);
-
-    //   Uri url = Uri.parse(
-    //       "${AppConfig().api_BASEURL}/api/products/${productidcontroller.text}");
-    //   var response = await http.delete(
-    //     url,
-    //     body: body,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "application/json",
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Authorization": 'Bearer $token'
-    //     },
-    //   );
-    //   print("token $token");
-    //   print(response.body);
-    //   print(response.statusCode);
-
-    //   if (response.statusCode == 200 && response.body == deleterespo) {
-    //     jsonResponse = json.decode(response.body.toString());
-
-    //     Navigator.pushNamed(context, '/homescreen');
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('Successfully deleted the product')));
-
-    //     print('success');
-    //   } else {
-    //     print('error');
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text('Invalid credential')));
-    //   }
-    // }
-
     return WillPopScope(
       child: Scaffold(
           extendBodyBehindAppBar: true,
@@ -91,14 +50,14 @@ class _DeleteProductScreenState extends State<DeleteProductScreen> {
               icon: Icon(Icons.arrow_back),
             ),
             centerTitle: true,
-            title: Text('Delete Product'),
+            title: const Text('Delete Product'),
             backgroundColor: Colors.transparent,
           ),
           body: FractionallySizedBox(
             alignment: Alignment.topCenter,
             widthFactor: 1,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/bg1.jpg"),
                   fit: BoxFit.cover,

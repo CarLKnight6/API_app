@@ -15,7 +15,7 @@ class ProductListScreen extends StatefulWidget {
 class _ProductListScreenState extends State<ProductListScreen> {
   final _formKey2 = GlobalKey<FormState>();
 
-  final imagelink_descriptioncontroller = TextEditingController();
+  final descriptioncontroller = TextEditingController();
 
   final pricecontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
@@ -23,13 +23,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
   int page = 1;
   int last_page = 1;
   void clearText() {
-    imagelink_descriptioncontroller.clear();
+    descriptioncontroller.clear();
     pricecontroller.clear();
   }
 
   @override
   void dispose() {
-    imagelink_descriptioncontroller.dispose();
+    descriptioncontroller.dispose();
     pricecontroller.dispose();
     ispublishedcontroller.dispose();
     namecontroller.dispose();
@@ -51,9 +51,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, '/homescreen');
               },
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
-            title: Text('Product List'),
+            title: const Text('Product List'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.arrow_left),
@@ -95,7 +95,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             backgroundColor: Colors.transparent,
           ),
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/bg2.jpg"),
                 fit: BoxFit.cover,
@@ -105,7 +105,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               future: ProductRepositories(context).getAllProducts(page),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
@@ -122,6 +122,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             var product_name = product.name;
                             var product_price = product.price;
                             var product_userid = product.userid;
+                            var product_imagelink = product.imagelink;
+
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(
@@ -129,7 +131,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     product_id,
                                     product_name,
                                     product_price,
-                                    product_userid),
+                                    product_userid,
+                                    product_imagelink),
                               ),
                             )
                                 .then((value) {
@@ -209,9 +212,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                          "https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1663488134047/726b466c7d68c4f7db93bb41b6070f29.png",
-                                          fit: BoxFit.fill),
+                                      child:
+
+                                          //  product.imagelink.isNotEmpty
+                                          // ? Image.network(product.imagelink,
+                                          //     fit: BoxFit.fill)
+                                          // :
+                                          Uri.parse(product.imagelink)
+                                                  .isAbsolute
+                                              ? Image.network(
+                                                  product.imagelink,
+                                                  fit: BoxFit.fill,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return Image.network(
+                                                        'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1663488134047/726b466c7d68c4f7db93bb41b6070f29.png',
+                                                        fit: BoxFit.fill);
+                                                  },
+                                                )
+                                              : Image.network(
+                                                  'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1663488134047/726b466c7d68c4f7db93bb41b6070f29.png',
+                                                  fit: BoxFit.fill),
                                     ),
                                   ),
                                 ],

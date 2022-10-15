@@ -16,7 +16,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    getToken();
   }
 
   @override
@@ -26,6 +25,8 @@ class _MainScreenState extends State<MainScreen> {
         token2 = value;
       });
     });
-    return token2 != '' && token2 != null ? HomeScreen() : LoginScreen();
+    return token2 != '' && token2 != null
+        ? const HomeScreen()
+        : const LoginScreen();
   }
 }

@@ -55,7 +55,6 @@ class ProductRepositories {
   }
 
   Future<List<ProductID>?> delete_product_screen(int id) async {
-    var jsonResponse;
     Map data = {
       'id': id,
     };
@@ -81,8 +80,6 @@ class ProductRepositories {
     print(response.statusCode);
 
     if (response.statusCode == 200 && response.body == '1') {
-      jsonResponse = json.decode(response.body.toString());
-
       Navigator.pushNamed(context, '/homescreen');
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Successfully deleted the product')));
@@ -113,12 +110,9 @@ class ProductRepositories {
       'price': price,
       'is_published': is_published
     };
-    print(data);
-    print("the first token $token");
 
     String body = json.encode(data);
-    // Uri url = Uri.parse(
-    //     "${AppConfig().api_BASEURL}/api/products/$captured_product_id");
+
     var response = await http.put(
       Uri.parse("${AppConfig().apibaseurl}/api/products/${id}"),
       body: body,
@@ -129,8 +123,6 @@ class ProductRepositories {
         "Authorization": 'Bearer $token'
       },
     );
-    print("token $token");
-    print(response.body);
     print(response.statusCode);
 
     if (response.statusCode == 200) {
@@ -138,17 +130,13 @@ class ProductRepositories {
       Navigator.pushNamed(context, '/productlist');
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Successfully updated the product')));
-
-      print('success');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Incomplete Product details')));
-      print('error');
     }
   }
 
   Future<List<Product>> getAllProducts(int? page) async {
-    // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
     print('this is page inside funct ${page}');
 
     var response = await http.get(
@@ -159,13 +147,17 @@ class ProductRepositories {
           "Access-Control-Allow-Origin": "*",
           "Authorization": 'Bearer $token'
         });
+
+    print(response.statusCode);
+
     var jsonData = json.decode(response.body);
     int last_page = (jsonData['last_page']);
-    print(jsonData['last_page']);
-    print('this is lastpage inside func ${last_page}');
     SharedPreferences lastpage = await SharedPreferences.getInstance();
     lastpage.setInt('last_page', last_page);
     Map data = {'current_page': page, 'last_page': last_page};
+
+    // print(response.body);
+    print(response.statusCode);
 
     var jsonArray = jsonData['data'];
     List<Product> products = [];
@@ -174,7 +166,9 @@ class ProductRepositories {
           id: jsonProduct['id'],
           userid: jsonProduct['user_id'],
           name: jsonProduct['name'],
+          imagelink: jsonProduct['image_link'],
           price: jsonProduct['price']);
+
       products.add(product);
     }
     return products;
