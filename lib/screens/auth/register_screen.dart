@@ -100,11 +100,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           if (_regformKey.currentState!.validate()) {
                             print('user is now registered');
-                            // AuthRepositories(context).RegisterOfuser(
-                            //     namecontroller.text,
-                            //     regemailcontroller.text,
-                            //     regpasswordcontroller.text,
-                            //     regconfirmpasswordcontroller.text);
+                            AuthRepositories(context).RegisterOfuser(
+                                namecontroller.text,
+                                regemailcontroller.text,
+                                regpasswordcontroller.text,
+                                regconfirmpasswordcontroller.text);
                             Future.delayed(const Duration(seconds: 3))
                                 .then((value) {
                               setState(() {
