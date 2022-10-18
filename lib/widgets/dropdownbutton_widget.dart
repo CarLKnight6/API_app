@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:api_app/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
 class DropDownButtonWidget extends StatefulWidget {
@@ -9,12 +6,14 @@ class DropDownButtonWidget extends StatefulWidget {
       required this.label,
       required this.value,
       required this.items,
-      this.onChanged});
+      this.onChanged,
+      this.hintText});
 
   final String label;
   final Object? value;
   final List<DropdownMenuItem<Object>> items;
   final void Function(Object?)? onChanged;
+  final String? hintText;
 
   @override
   State<DropDownButtonWidget> createState() => _DropDownButtonWidgetState();
@@ -31,6 +30,7 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
             hoverColor: Colors.grey,
             focusColor: Colors.grey,
             fillColor: Colors.grey,
+            hintText: widget.hintText,
             hintStyle:
                 const TextStyle(color: Color.fromARGB(255, 243, 237, 237)),
             floatingLabelBehavior: FloatingLabelBehavior.always,

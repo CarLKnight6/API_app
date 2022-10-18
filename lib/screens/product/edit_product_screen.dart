@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:api_app/Repositories/product_repository.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
@@ -40,7 +39,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   var productidcontroller = TextEditingController();
   var productnamecontroller = TextEditingController();
   var productimagelinkcontroller = TextEditingController();
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   final _editproductformKey = GlobalKey<FormState>();
   late StreamController _streamController;
   late Stream _stream;
@@ -89,9 +88,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, '/productlist');
               },
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
-            title: Text('Edit Product'),
+            title: const Text('Edit Product'),
             backgroundColor: Colors.transparent,
           ),
           body: FractionallySizedBox(
@@ -138,12 +137,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         label: 'Image Link'),
                     DropDownButtonWidget(
                       label: 'Is published?',
+                      hintText: captured_product_ispublished.toString(),
                       value: is_published,
                       onChanged: (newValue) {
                         setState(() {
                           is_published = newValue;
-                          print(is_published);
-                          print(is_published.runtimeType);
                         });
                       },
                       items:
@@ -159,9 +157,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       label: 'Update',
                       onPressed: () {
                         if (_editproductformKey.currentState!.validate()) {
-                          //addprod here
-
-                          // fetchProducts();
                           _search();
                           ProductRepositories(context).edit_product_screen(
                               captured_product_id,

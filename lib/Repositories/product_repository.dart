@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:api_app/AppConfig/Appconfig.dart';
 import 'package:api_app/Repositories/product_repository_interface.dart';
@@ -14,21 +13,21 @@ class ProductRepositories extends ProductRepositoryInterface {
   BuildContext context;
 
   @override
-  Future<List<Productdetails>?> AddProduct(String name, String image_link,
-      String description, String price, int is_published) async {
+  Future<List<Productdetails>?> AddProduct(String name, String imageLink,
+      String description, String price, int isPublished) async {
     var jsonResponse;
     Map data = {
       'name': name,
-      'image_link': image_link,
+      'image_link': imageLink,
       'description': description,
       'price': price,
-      'is_published': is_published
+      'is_published': isPublished
     };
     print(data);
     print("the first token $token");
 
     String body = json.encode(data);
-    Uri url = Uri.parse("${AppConfig().apibaseurl}/api/products");
+    Uri url = Uri.parse("${AppConfig.baseUrl}/products");
     var response = await http.post(
       url,
       body: body,
@@ -55,6 +54,7 @@ class ProductRepositories extends ProductRepositoryInterface {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid product details')));
     }
+    return null;
   }
 
   @override
@@ -67,8 +67,7 @@ class ProductRepositories extends ProductRepositoryInterface {
 
     String body = json.encode(data);
 
-    Uri url =
-        Uri.parse("${AppConfig().apibaseurl}/api/products/${id.toString()}");
+    Uri url = Uri.parse("${AppConfig.baseUrl}/products/${id.toString()}");
     var response = await http.delete(
       url,
       body: body,
@@ -94,32 +93,33 @@ class ProductRepositories extends ProductRepositoryInterface {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Invalid ID')));
     }
+    return null;
   }
 
   @override
   Future<List<UpdateProduct>?> edit_product_screen(
       int id,
-      int user_id,
+      int userId,
       String name,
-      String image_link,
+      String imageLink,
       String description,
       String price,
-      int is_published) async {
+      int isPublished) async {
     var jsonResponse;
     Map data = {
       'id': id,
-      'user_id': user_id,
+      'user_id': userId,
       'name': name,
-      'image_link': image_link,
+      'image_link': imageLink,
       'description': description,
       'price': price,
-      'is_published': is_published
+      'is_published': isPublished
     };
 
     String body = json.encode(data);
 
     var response = await http.put(
-      Uri.parse("${AppConfig().apibaseurl}/api/products/${id}"),
+      Uri.parse("${AppConfig.baseUrl}/products/$id"),
       body: body,
       headers: {
         "Content-Type": "application/json",
@@ -139,28 +139,28 @@ class ProductRepositories extends ProductRepositoryInterface {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Incomplete Product details')));
     }
+    return null;
   }
 
   @override
   Future<List<Product>> getAllProducts(int? page) async {
-    print('this is page inside funct ${page}');
+    print('this is page inside funct $page');
 
-    var response = await http.get(
-        Uri.parse("${AppConfig().apibaseurl}/api/products?page=$page"),
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Authorization": 'Bearer $token'
-        });
+    var response = await http
+        .get(Uri.parse("${AppConfig.baseUrl}/products?page=$page"), headers: {
+      "Content-Type": "application/json",
+      "accept": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Authorization": 'Bearer $token'
+    });
 
     print(response.statusCode);
 
     var jsonData = json.decode(response.body);
-    int last_page = (jsonData['last_page']);
+    int lastPage = (jsonData['last_page']);
     SharedPreferences lastpage = await SharedPreferences.getInstance();
-    lastpage.setInt('last_page', last_page);
-    Map data = {'current_page': page, 'last_page': last_page};
+    lastpage.setInt('last_page', lastPage);
+    Map data = {'current_page': page, 'last_page': lastPage};
 
     print(response.statusCode);
     print(response.body);

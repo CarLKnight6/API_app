@@ -21,7 +21,7 @@ class AuthRepositories implements AuthRepositoryInterface {
     };
 
     String body = json.encode(data);
-    Uri url = Uri.parse("${AppConfig().apibaseurl}/api/login");
+    Uri url = Uri.parse("${AppConfig.baseUrl}/login");
     var response = await http.post(
       url,
       body: body,
@@ -45,22 +45,23 @@ class AuthRepositories implements AuthRepositoryInterface {
     } else {
       print('error');
     }
+    return null;
   }
 
   @override
   Future<List<Registerdetails>?> RegisterOfuser(
-      String name, email, password, password_confirmation) async {
+      String name, email, password, passwordConfirmation) async {
     var jsonResponse;
     Map data = {
       'name': name,
       'email': email,
       'password': password,
-      'password_confirmation': password_confirmation
+      'password_confirmation': passwordConfirmation
     };
     print(data);
 
     String body = json.encode(data);
-    Uri url = Uri.parse(AppConfig().apibaseurl + "/api/register");
+    Uri url = Uri.parse("${AppConfig.baseUrl}/register");
     var response = await http.post(
       url,
       body: body,
@@ -69,7 +70,7 @@ class AuthRepositories implements AuthRepositoryInterface {
         "accept": "application/json",
         "Access-Control-Allow-Origin": "*"
       },
-    ).timeout(Duration(seconds: 10));
+    ).timeout(const Duration(seconds: 10));
 
     print(response.body);
     print(response.statusCode);
@@ -79,16 +80,17 @@ class AuthRepositories implements AuthRepositoryInterface {
 
       Navigator.pushNamed(context, '/loginscreen');
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Successfully registered')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Successfully registered')));
       print('success');
     } else if (response.statusCode == 422) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('The email has already been taken')));
     } else {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Invalid Data')));
+          .showSnackBar(const SnackBar(content: Text('Invalid Data')));
       print('error');
     }
+    return null;
   }
 }

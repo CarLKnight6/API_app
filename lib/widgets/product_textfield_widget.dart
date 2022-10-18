@@ -43,10 +43,13 @@ class _ProductTextFormFieldState extends State<ProductTextFormField> {
           enabled: widget.enabled,
           readOnly: widget.readOnly,
           decoration: InputDecoration(
-              hintStyle: const TextStyle(color: Colors.grey),
+              hintStyle:
+                  const TextStyle(color: Color.fromARGB(255, 239, 235, 235)),
               hintText: widget.hintText,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               labelText: widget.label,
+              hoverColor: Colors.white,
+              alignLabelWithHint: mounted,
               labelStyle:
                   const TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
               errorStyle: const TextStyle(

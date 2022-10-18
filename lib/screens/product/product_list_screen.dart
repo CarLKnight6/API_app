@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/models.dart';
 
 class ProductListScreen extends StatefulWidget {
-  ProductListScreen({Key? key, String? token}) : super(key: key);
+  const ProductListScreen({Key? key, String? token}) : super(key: key);
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
@@ -65,13 +65,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       ProductRepositories(context).getAllProducts(page);
                     });
                   } else if (page == 0) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('end of page')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('end of page')));
                   }
 
                   print(page);
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('end of page')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('end of page')));
                 },
               ),
               IconButton(
@@ -86,8 +86,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       ProductRepositories(context).getAllProducts(page);
                     });
                   } else {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('end of page')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('end of page')));
                   }
                 },
               ),
@@ -118,23 +118,23 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         return InkWell(
                           onTap: () {
                             print(product.id);
-                            var product_id = product.id;
-                            var product_name = product.name;
-                            var product_price = product.price;
-                            var product_userid = product.userid;
-                            var product_imagelink = product.imagelink;
-                            var product_ispublished = product.is_published;
+                            var productId = product.id;
+                            var productName = product.name;
+                            var productPrice = product.price;
+                            var productUserid = product.userid;
+                            var productImagelink = product.imagelink;
+                            var productIspublished = product.is_published;
 
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(
                                 builder: (context) => EditProductScreen(
-                                    product_id,
-                                    product_name,
-                                    product_price,
-                                    product_userid,
-                                    product_imagelink,
-                                    product_ispublished),
+                                    productId,
+                                    productName,
+                                    productPrice,
+                                    productUserid,
+                                    productImagelink,
+                                    productIspublished),
                               ),
                             )
                                 .then((value) {

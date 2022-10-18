@@ -1,20 +1,18 @@
-import 'dart:ffi';
-
 import '../model/models.dart';
 
 abstract class ProductRepositoryInterface {
-  Future<List<Productdetails>?> AddProduct(String name, String image_link,
-      String description, String price, int is_published);
+  Future<List<Productdetails>?> AddProduct(String name, String imageLink,
+      String description, String price, int isPublished);
 
   Future<List<ProductID>?> delete_product_screen(int id);
   Future<List<UpdateProduct>?> edit_product_screen(
       int id,
-      int user_id,
+      int userId,
       String name,
-      String image_link,
+      String imageLink,
       String description,
       String price,
-      int is_published);
+      int isPublished);
 
   Future<List<Product>> getAllProducts(int? page);
 }

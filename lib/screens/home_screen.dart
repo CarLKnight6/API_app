@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> LogoutOfuser() async {
     var jsonResponse;
 
-    Uri url = Uri.parse("${AppConfig().apibaseurl}/api/logout");
+    Uri url = Uri.parse("${AppConfig.baseUrl}/logout");
     var response = await http.post(
       url,
       headers: {
@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
@@ -126,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: TextFieldWidget(
                         label: 'Welcome User $token',
