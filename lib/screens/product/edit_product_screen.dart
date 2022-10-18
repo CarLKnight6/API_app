@@ -138,7 +138,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         label: 'Image Link'),
                     DropDownButtonWidget(
                       label: 'Is published?',
-                      value: captured_product_ispublished as int,
+                      value: is_published,
                       onChanged: (newValue) {
                         setState(() {
                           is_published = newValue;
@@ -155,6 +155,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       }).toList(),
                     ),
                     Button(
+                      formKey: _editproductformKey,
                       label: 'Update',
                       onPressed: () {
                         if (_editproductformKey.currentState!.validate()) {
