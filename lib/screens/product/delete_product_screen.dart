@@ -1,4 +1,4 @@
-import 'package:api_app/Repositories/product_repositories.dart';
+import 'package:api_app/Repositories/product_repository.dart';
 import 'package:api_app/widgets/button.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
 

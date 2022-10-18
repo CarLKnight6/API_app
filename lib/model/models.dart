@@ -8,6 +8,7 @@ class Product {
   String imagelink;
   int? currentpage;
   int? lastpage;
+  int is_published;
 
   Product(
       {required this.id,
@@ -15,6 +16,7 @@ class Product {
       required this.imagelink,
       required this.name,
       required this.price,
+      required this.is_published,
       this.currentpage,
       this.lastpage});
 }
@@ -44,14 +46,14 @@ class Productdetails {
   String? imagelink;
   String? description;
   String price;
-  Bool ispublished;
+  Bool? ispublished;
 
   Productdetails(
       {required this.name,
       this.imagelink,
       this.description,
       required this.price,
-      required this.ispublished});
+      this.ispublished});
 }
 
 class ProductID {

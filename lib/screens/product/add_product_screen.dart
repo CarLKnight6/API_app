@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:api_app/Repositories/product_repositories.dart';
+import 'dart:ffi';
+
+import 'package:api_app/Repositories/product_repository.dart';
 
 import 'package:api_app/widgets/button.dart';
+import 'package:api_app/widgets/dropdownbutton_widget.dart';
 import 'package:api_app/widgets/product_textfield_widget.dart';
 
 import 'package:flutter/material.dart';
@@ -16,9 +19,10 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   final _formKey2 = GlobalKey<FormState>();
-
+  Object? value;
   final descriptioncontroller = TextEditingController();
-
+  Object? is_published;
+  int captured_product_ispublished = 1;
   final pricecontroller = TextEditingController();
   final imagelinkcontroller = TextEditingController();
   TextEditingController ispublishedcontroller = TextEditingController();
@@ -92,10 +96,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           readOnly: false,
                           textController: imagelinkcontroller,
                           label: 'Image Link'),
-                      ProductTextFormField(
-                          readOnly: false,
-                          textController: ispublishedcontroller,
-                          label: 'Is published?'),
+                      DropDownButtonWidget(
+                        label: 'Is published?',
+                        value: captured_product_ispublished as int,
+                        onChanged: (newValue) {
+                          setState(() {
+                            is_published = newValue;
+                            print(is_published);
+                            print(is_published.runtimeType);
+                          });
+                        },
+                        items:
+                            <int>[1, 0].map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                      ),
                       Button(
                         label: 'Submit',
                         onPressed: () {
@@ -105,7 +123,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 imagelinkcontroller.text,
                                 descriptioncontroller.text,
                                 pricecontroller.text,
-                                false);
+                                is_published as int);
                           }
                         },
                       )

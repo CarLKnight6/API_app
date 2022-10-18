@@ -1,18 +1,21 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:api_app/AppConfig/Appconfig.dart';
+import 'package:api_app/Repositories/product_repository_interface.dart';
 import 'package:api_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../model/models.dart';
 
-class ProductRepositories {
+class ProductRepositories extends ProductRepositoryInterface {
   ProductRepositories(this.context);
   BuildContext context;
 
+  @override
   Future<List<Productdetails>?> AddProduct(String name, String image_link,
-      String description, String price, bool is_published) async {
+      String description, String price, int is_published) async {
     var jsonResponse;
     Map data = {
       'name': name,
@@ -54,6 +57,7 @@ class ProductRepositories {
     }
   }
 
+  @override
   Future<List<ProductID>?> delete_product_screen(int id) async {
     Map data = {
       'id': id,
@@ -92,6 +96,7 @@ class ProductRepositories {
     }
   }
 
+  @override
   Future<List<UpdateProduct>?> edit_product_screen(
       int id,
       int user_id,
@@ -99,7 +104,7 @@ class ProductRepositories {
       String image_link,
       String description,
       String price,
-      bool is_published) async {
+      int is_published) async {
     var jsonResponse;
     Map data = {
       'id': id,
@@ -136,6 +141,7 @@ class ProductRepositories {
     }
   }
 
+  @override
   Future<List<Product>> getAllProducts(int? page) async {
     print('this is page inside funct ${page}');
 
@@ -156,9 +162,8 @@ class ProductRepositories {
     lastpage.setInt('last_page', last_page);
     Map data = {'current_page': page, 'last_page': last_page};
 
-    // print(response.body);
     print(response.statusCode);
-
+    print(response.body);
     var jsonArray = jsonData['data'];
     List<Product> products = [];
     for (var jsonProduct in jsonArray) {
@@ -167,7 +172,8 @@ class ProductRepositories {
           userid: jsonProduct['user_id'],
           name: jsonProduct['name'],
           imagelink: jsonProduct['image_link'],
-          price: jsonProduct['price']);
+          price: jsonProduct['price'],
+          is_published: jsonProduct['is_published']);
 
       products.add(product);
     }

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../model/models.dart';
+import 'auth_repository_interface.dart';
 
-class AuthRepositories {
+class AuthRepositories implements AuthRepositoryInterface {
   AuthRepositories(this.context);
   BuildContext context;
 
+  @override
   Future<List<Logindetails>?> LoginOfuser(String email, password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -45,6 +47,7 @@ class AuthRepositories {
     }
   }
 
+  @override
   Future<List<Registerdetails>?> RegisterOfuser(
       String name, email, password, password_confirmation) async {
     var jsonResponse;

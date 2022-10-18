@@ -1,4 +1,4 @@
-import 'package:api_app/Repositories/product_repositories.dart';
+import 'package:api_app/Repositories/product_repository.dart';
 import 'package:api_app/screens/product/edit_product_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +123,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             var product_price = product.price;
                             var product_userid = product.userid;
                             var product_imagelink = product.imagelink;
+                            var product_ispublished = product.is_published;
 
                             Navigator.of(context)
                                 .push(
@@ -132,7 +133,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     product_name,
                                     product_price,
                                     product_userid,
-                                    product_imagelink),
+                                    product_imagelink,
+                                    product_ispublished),
                               ),
                             )
                                 .then((value) {
@@ -168,13 +170,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         ),
                                         Container(
                                           color: Colors.transparent,
-                                          height: 50.0,
+                                          height: 60.0,
                                           width: double.infinity,
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text('\$ ${product.price}',
                                                   style: GoogleFonts.openSans(
@@ -184,6 +182,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                       color: Colors.white)),
                                               Text(
                                                   'ID ${product.id.toString()}',
+                                                  style: GoogleFonts.openSans(
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white)),
+                                              Text(
+                                                  'Is published? ${product.is_published.toString()}',
                                                   style: GoogleFonts.openSans(
                                                       fontSize: 15.0,
                                                       fontWeight:
@@ -208,7 +213,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       //       offset: Offset(0, 25),
                                       //       blurRadius: 3,
                                       //       spreadRadius: -10)
-                                      // ],
+                                      // ], https://www.trustedreviews.com/wp-content/uploads/sites/54/2022/03/best-phone-2022-920x613.jpg
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
@@ -223,16 +228,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               ? Image.network(
                                                   product.imagelink,
                                                   fit: BoxFit.fill,
-                                                  errorBuilder: (context, error,
-                                                      stackTrace) {
-                                                    return Image.network(
-                                                        'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1663488134047/726b466c7d68c4f7db93bb41b6070f29.png',
-                                                        fit: BoxFit.fill);
-                                                  },
                                                 )
-                                              : Image.network(
-                                                  'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1663488134047/726b466c7d68c4f7db93bb41b6070f29.png',
-                                                  fit: BoxFit.fill),
+                                              : Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "assets/images/error_img.jpg"),
+                                                      fit: BoxFit.cover),
+                                                )),
                                     ),
                                   ),
                                 ],
