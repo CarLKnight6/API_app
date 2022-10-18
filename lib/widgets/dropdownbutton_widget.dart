@@ -23,25 +23,33 @@ class DropDownButtonWidget extends StatefulWidget {
 class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      TextFieldWidget(label: widget.label),
-      DropdownButton(
+    return Column(children: [
+      DropdownButtonFormField(
+        dropdownColor: Colors.transparent,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+            hintStyle:
+                const TextStyle(color: Color.fromARGB(255, 243, 237, 237)),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            labelText: widget.label,
+            labelStyle:
+                const TextStyle(color: Color.fromARGB(255, 239, 238, 242)),
+            errorStyle: const TextStyle(
+              color: Colors.red,
+            ),
+            focusedBorder: const OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: Color.fromARGB(255, 229, 236, 222)))),
         value: widget.value,
-        icon: const Icon(Icons.arrow_downward),
-        iconSize: 24,
-        elevation: 16,
-        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
         onChanged: widget.onChanged,
+        validator: (value) {
+          if (value.toString().isEmpty) {
+            return '${widget.label} is required';
+          }
+          return null;
+        },
         items: widget.items,
       ),
     ]);
   }
 }
-
-
-
-//(int? newValue) {}

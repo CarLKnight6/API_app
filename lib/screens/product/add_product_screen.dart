@@ -18,7 +18,6 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  final _formKey2 = GlobalKey<FormState>();
   Object? value;
   final descriptioncontroller = TextEditingController();
   Object? is_published;
@@ -67,7 +66,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
             alignment: Alignment.topCenter,
             widthFactor: 1,
             child: Container(
-                key: _formKey2,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/bg1.jpg"),
@@ -97,23 +95,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           textController: imagelinkcontroller,
                           label: 'Image Link'),
                       DropDownButtonWidget(
-                        label: 'Is published?',
-                        value: captured_product_ispublished as int,
-                        onChanged: (newValue) {
-                          setState(() {
-                            is_published = newValue;
-                            print(is_published);
-                            print(is_published.runtimeType);
-                          });
-                        },
-                        items:
-                            <int>[1, 0].map<DropdownMenuItem<int>>((int value) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                      ),
+                          label: 'Is published?',
+                          value: captured_product_ispublished,
+                          onChanged: (newValue) {
+                            setState(() {
+                              is_published = newValue;
+                              print(is_published);
+                              print(is_published.runtimeType);
+                            });
+                          },
+                          items: [1, 0].map<DropdownMenuItem<int>>((int value) {
+                            return DropdownMenuItem<int>(
+                              value: value,
+                              child: Text(value.toString()),
+                            );
+                          }).toList()),
+                      // DropDownButtonWidget(
+                      //   label: 'Is published?',
+                      //   value: captured_product_ispublished as int,
+                      //   onChanged: (newValue) {
+                      //     setState(() {
+                      //       is_published = newValue;
+                      //       print(is_published);
+                      //       print(is_published.runtimeType);
+                      //     });
+                      //   },
+                      //   items:
+                      //       <int>[1, 0].map<DropdownMenuItem<int>>((int value) {
+                      //     return DropdownMenuItem<int>(
+                      //       value: value,
+                      //       child: Text(value.toString()),
+                      //     );
+                      //   }).toList(),
+                      // ),
                       Button(
                         label: 'Submit',
                         onPressed: () {
