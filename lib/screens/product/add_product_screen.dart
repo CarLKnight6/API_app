@@ -96,7 +96,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           label: 'Image Link'),
                       DropDownButtonWidget(
                           label: 'Is published?',
-                          value: is_published,
+                          value: captured_product_ispublished,
                           onChanged: (newValue) {
                             setState(() {
                               is_published = newValue;
@@ -110,8 +110,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               child: Text(value.toString()),
                             );
                           }).toList()),
+                      // DropDownButtonWidget(
+                      //   label: 'Is published?',
+                      //   value: captured_product_ispublished as int,
+                      //   onChanged: (newValue) {
+                      //     setState(() {
+                      //       is_published = newValue;
+                      //       print(is_published);
+                      //       print(is_published.runtimeType);
+                      //     });
+                      //   },
+                      //   items:
+                      //       <int>[1, 0].map<DropdownMenuItem<int>>((int value) {
+                      //     return DropdownMenuItem<int>(
+                      //       value: value,
+                      //       child: Text(value.toString()),
+                      //     );
+                      //   }).toList(),
+                      // ),
                       Button(
-                        formKey: _productformKey,
                         label: 'Submit',
                         onPressed: () {
                           if (_productformKey.currentState!.validate()) {

@@ -24,13 +24,12 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
   Widget build(BuildContext context) {
     return Column(children: [
       DropdownButtonFormField(
-        dropdownColor: Colors.white12,
+        dropdownColor: Colors.transparent,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             hoverColor: Colors.grey,
             focusColor: Colors.grey,
             fillColor: Colors.grey,
-            hintText: widget.hintText,
             hintStyle:
                 const TextStyle(color: Color.fromARGB(255, 243, 237, 237)),
             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -46,7 +45,7 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
         value: widget.value,
         onChanged: widget.onChanged,
         validator: (value) {
-          if (value == null) {
+          if (value.toString().isEmpty) {
             return '${widget.label} is required';
           }
           return null;
