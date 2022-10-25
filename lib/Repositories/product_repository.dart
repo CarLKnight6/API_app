@@ -168,8 +168,8 @@ class ProductRepositories extends ProductRepositoryInterface {
     List<Product> products = [];
     for (var jsonProduct in jsonArray) {
       Product product = Product(
+          userid: jsonProduct['userId'],
           id: jsonProduct['id'],
-          userid: jsonProduct['user_id'],
           name: jsonProduct['name'],
           imagelink: jsonProduct['image_link'],
           price: jsonProduct['price'],
