@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
         '/loginscreen': (context) => const LoginScreen(),
         '/homescreen': (context) => const HomeScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/deleteproduct': (context) => DeleteProductScreen(),
-        '/productlist': (context) => ProductListScreen(),
-        '/addproduct': (context) => AddProductScreen()
+        '/deleteproduct': (context) => const DeleteProductScreen(),
+        '/productlist': (context) => const ProductListScreen(),
+        '/addproduct': (context) => const AddProductScreen()
       },
     );
   }

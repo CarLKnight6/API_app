@@ -206,37 +206,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(40),
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //       color: Colors.transparent
-                                      //           .withOpacity(0.5),
-                                      //       offset: Offset(0, 25),
-                                      //       blurRadius: 3,
-                                      //       spreadRadius: -10)
-                                      // ], https://www.trustedreviews.com/wp-content/uploads/sites/54/2022/03/best-phone-2022-920x613.jpg
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child:
-
-                                          //  product.imagelink.isNotEmpty
-                                          // ? Image.network(product.imagelink,
-                                          //     fit: BoxFit.fill)
-                                          // :
-                                          Uri.parse(product.imagelink)
-                                                  .isAbsolute
-                                              ? Image.network(
-                                                  product.imagelink,
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/error_img.jpg"),
-                                                      fit: BoxFit.cover),
-                                                )),
+                                      child: Uri.parse(product.imagelink)
+                                              .isAbsolute
+                                          ? Image.network(
+                                              product.imagelink,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Container(
+                                              decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      "assets/images/error_img.jpg"),
+                                                  fit: BoxFit.cover),
+                                            )),
                                     ),
                                   ),
                                 ],

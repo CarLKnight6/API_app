@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'dart:ffi';
-
 import 'package:api_app/Repositories/product_repository.dart';
 
 import 'package:api_app/widgets/button.dart';
@@ -11,7 +9,7 @@ import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:flutter/material.dart';
 
 class AddProductScreen extends StatefulWidget {
-  AddProductScreen({Key? key, String? token}) : super(key: key);
+  const AddProductScreen({Key? key, String? token}) : super(key: key);
 
   @override
   _AddProductScreenState createState() => _AddProductScreenState();

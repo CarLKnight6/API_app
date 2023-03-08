@@ -5,7 +5,7 @@ import 'package:api_app/widgets/product_textfield_widget.dart';
 import 'package:flutter/material.dart';
 
 class DeleteProductScreen extends StatefulWidget {
-  DeleteProductScreen({Key? key, String? token}) : super(key: key);
+  const DeleteProductScreen({Key? key, String? token}) : super(key: key);
 
   @override
   _DeleteProductScreenState createState() => _DeleteProductScreenState();
@@ -47,7 +47,7 @@ class _DeleteProductScreenState extends State<DeleteProductScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, '/homescreen');
               },
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
             centerTitle: true,
             title: const Text('Delete Product'),

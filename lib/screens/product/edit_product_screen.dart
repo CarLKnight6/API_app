@@ -61,7 +61,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     productidcontroller.text = captured_product_id.toString();
     captured_product_ispublished = widget.product_ispublished;
     _search() async {
-      //search function here
       print(captured_product_id);
     }
 
